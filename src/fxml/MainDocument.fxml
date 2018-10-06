@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.net.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.Insets?>
+<?language javascript ?>
+
+<AnchorPane fx:id="mainPane" prefHeight="624" prefWidth="1024" styleClass="main-frame" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Pane prefHeight="624.0" prefWidth="1024.0" styleClass="main-pane">
+            <children>
+                <Pane onMouseDragged="#dragWindow" onMousePressed="#dragWindow" prefHeight="62" prefWidth="900" />
+                <TextField fx:id="serverIpField" layoutX="24" layoutY="74" prefHeight="24" prefWidth="579" styleClass="factorio-textfield" />
+                <Button fx:id="selectServerButton" defaultButton="true" layoutX="24" layoutY="108" onAction="#selectServerButtonHandler" prefHeight="55" prefWidth="579.0" styleClass="factorio-button" text="Выбрать сервер" />
+                <ScrollPane fitToWidth="true" layoutX="612" layoutY="74" prefHeight="430" prefWidth="388" styleClass="factorio-pane">
+                    <content>
+                        <Pane>
+                            <children>
+                                <VBox layoutX="10.0" layoutY="10.0">
+                                    <children>
+                                        <Text fx:id="errorText" fill="#ff334c" strokeType="OUTSIDE" strokeWidth="0.0" text="ErrorText" textAlignment="CENTER" wrappingWidth="340.0">
+                                            <font>
+                                                <Font size="15.0" />
+                                            </font>
+                                        </Text>
+                                        <VBox fx:id="serverInfoVBox">
+                                            <children>
+                                                <Text fx:id="serverNameText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="ServerName" textAlignment="CENTER" wrappingWidth="340.0">
+                                                    <font>
+                                                        <Font name="System Bold" size="20.0" />
+                                                    </font>
+                                                </Text>
+                                                <Text fx:id="serverDescriptionText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="ServerDesc" textAlignment="CENTER" wrappingWidth="340.0"> 
+                                                    <font>
+                                                        <Font size="14.0" />
+                                                    </font>
+                                                </Text>
+                                                <HBox disable="true">
+                                                    <children>
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Версия игры:" wrappingWidth="100.0">
+                                                            <font>
+                                                                <Font name="System Bold" size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <Text fx:id="gameVersionText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="GameVersion" wrappingWidth="220.0">
+                                                            <font>
+                                                                <Font size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                    </children>
+                                                    <opaqueInsets>
+                                                        <Insets />
+                                                    </opaqueInsets>
+                                                    <VBox.margin>
+                                                        <Insets top="10.0" />
+                                                    </VBox.margin>
+                                                </HBox>
+                                                <HBox>
+                                                    <children>
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Игроков:" wrappingWidth="100.0">
+                                                            <font>
+                                                                <Font name="System Bold" size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <Text fx:id="playersCountText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="PlayersCount" wrappingWidth="220.0">
+                                                            <font>
+                                                                <Font size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets top="5.0" />
+                                                    </VBox.margin>
+                                                </HBox>
+                                                <HBox prefWidth="360.0">
+                                                    <children>
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Пиратка:" wrappingWidth="100.0">
+                                                            <font>
+                                                                <Font name="System Bold" size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <Text fx:id="authNeededText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="AuthNeed" wrappingWidth="220.0">
+                                                            <font>
+                                                                <Font size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets top="5.0" />
+                                                    </VBox.margin>
+                                                </HBox>
+                                                <HBox layoutX="10.0" layoutY="114.0" prefWidth="360.0">
+                                                    <children>
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Пароль:" wrappingWidth="100.0">
+                                                            <font>
+                                                                <Font name="System Bold" size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <Text fx:id="passwordNeededText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="PasswordNeed" wrappingWidth="220.0">
+                                                            <font>
+                                                                <Font size="14.0" />
+                                                            </font>
+                                                            <HBox.margin>
+                                                                <Insets />
+                                                            </HBox.margin>
+                                                        </Text>
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets top="5.0" />
+                                                    </VBox.margin>
+                                                </HBox>
+                                                <HBox>
+                                                    <children>
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Время в игре:" wrappingWidth="100.0">
+                                                            <font>
+                                                                <Font name="System Bold" size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <Text fx:id="gameTimeText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="GameTime" wrappingWidth="220.0">
+                                                            <font>
+                                                                <Font size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets top="5.0" />
+                                                    </VBox.margin>
+                                                </HBox>
+                                                <HBox layoutX="10.0" layoutY="117.0">
+                                                    <children>
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Моды:" wrappingWidth="100.0">
+                                                            <font>
+                                                                <Font name="System Bold" size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <VBox fx:id="modsVBox" prefWidth="240.0" />
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets top="5.0" />
+                                                    </VBox.margin>
+                                                </HBox>
+                                                <HBox layoutX="10.0" layoutY="137.0">
+                                                    <children>
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Игроки:" wrappingWidth="100.0">
+                                                            <font>
+                                                                <Font name="System Bold" size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <VBox fx:id="playersVBox" prefWidth="240.0" />
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets top="5.0" />
+                                                    </VBox.margin>
+                                                </HBox>
+                                                <HBox layoutX="10.0" layoutY="177.0">
+                                                    <children>
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Админы:" wrappingWidth="100.0">
+                                                            <font>
+                                                                <Font name="System Bold" size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <VBox fx:id="adminsVBox" prefWidth="240.0" />
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets top="5.0" />
+                                                    </VBox.margin>
+                                                </HBox>
+                                                <HBox layoutX="10.0" layoutY="217.0">
+                                                    <children>
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Банлист:" wrappingWidth="100.0">
+                                                            <font>
+                                                                <Font name="System Bold" size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <VBox fx:id="banlistVBox" prefWidth="240.0" />
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets top="5.0" />
+                                                    </VBox.margin>
+                                                </HBox>
+                                                <HBox layoutX="10.0" layoutY="257.0">
+                                                    <children>
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Вайтлист:" wrappingWidth="100.0">
+                                                            <font>
+                                                                <Font name="System Bold" size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <VBox fx:id="whitelistVBox" prefWidth="240.0" />
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets bottom="10.0" top="5.0" />
+                                                    </VBox.margin>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </Pane>
+                    </content>
+                </ScrollPane>
+                <Button fx:id="closeButton" layoutX="968" layoutY="18" onAction="#closeWindow" prefHeight="40" prefWidth="40" styleClass="factorio-button" text="X" />
+                <Button fx:id="minimizeButton" layoutX="924" layoutY="18" onAction="#minimizeWindow" prefHeight="40" prefWidth="40" styleClass="factorio-button" text="_" />
+                <Button fx:id="runGameButton" disable="true" layoutX="612" layoutY="515.0" onAction="#runGameButton" prefHeight="85.0" prefWidth="388" styleClass="factorio-button" text="Запустить игру" />
+                <Button layoutX="541.0" layoutY="171.0" mnemonicParsing="false" prefHeight="62.0" onAction="#selectFactorioFolderHandler" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
+            <Text fx:id="factorioFolderText" fill="WHITE" layoutX="24.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка с Factorio: Не указана" wrappingWidth="500.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
+            <Pane fx:id="serverInfoLoadPane" layoutX="622.0" layoutY="454.0" prefHeight="40.0" prefWidth="367.0">
+               <children>
+                  <Text fill="WHITE" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Загрузка...">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <ProgressBar fx:id="serverLoadProgressBar" layoutY="33.0" prefHeight="7.0" prefWidth="367.0" styleClass="factorio-progressbar-simple" />
+               </children>
+            </Pane>
+            </children>
+        </Pane>
+    </children>
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+</AnchorPane>

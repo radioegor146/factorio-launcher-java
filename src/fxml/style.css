@@ -1,0 +1,174 @@
+@font-face {
+    font-family: 'Lato';
+    src: url('/fxml/fonts/Lato-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('/fxml/fonts/Lato-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('/fxml/fonts/Lato-Semibold.ttf');
+}
+
+
+
+.main-frame {
+    -fx-background-color: transparent;
+}
+
+.main-pane {
+    -fx-padding: 12px;
+    -fx-border-insets: 12px;
+    -fx-background-insets: 12px;
+    -fx-background-color: lightblue;
+    -fx-background-image: url("images/background.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 12, 0.5, 0.0, 0.0);
+}
+
+.factorio-button {
+    -fx-padding: 0;
+    -fx-spacing: 0;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+    -fx-border-radius: 2;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-color: #46464B;
+    -fx-border-width: 2px;
+    -fx-border-color: #6E6E72 #000 #000 #5E5E65;
+    -fx-font: bold 1.5em "Lato";
+    -fx-text-fill: #FFF;
+}
+
+.factorio-button:hover {
+    -fx-border-color: #FF9F1B #000 #000 #FF9F1B;
+    -fx-background-color: #FF9F1B;
+    -fx-text-fill: #000;
+}
+
+.factorio-button:pressed {
+    -fx-border-color: #000 #1E1E21 #1E1E21 #000;
+    -fx-background-color: #1E1E21;
+    -fx-text-fill: #FFF;
+}
+
+.factorio-pane {
+    -fx-background-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 1.4, 0, -1,-2;
+    -fx-font: 15px "Lato";
+    -fx-font-smoothing-type: lcd;
+    -fx-fill: white;
+}
+
+.factorio-pane > .viewport {
+    -fx-background-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.factorio-pane .increment-button, .decrement-button {
+    -fx-shape: "";
+    -fx-border-radius: 2;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-color: #46464B;
+    -fx-border-width: 2px;
+    -fx-border-color: #6E6E72 #000 #000 #5E5E65;
+}
+
+.factorio-pane .increment-button:hover, .decrement-button:hover {
+    -fx-border-color: #FF9F1B #000 #000 #FF9F1B;
+    -fx-background-color: #FF9F1B;
+}
+
+.factorio-pane .increment-button:pressed, .decrement-button:pressed {
+    -fx-border-color: #000 #1E1E21 #1E1E21 #000;
+    -fx-background-color: #1E1E21;
+}
+
+.factorio-pane .increment-arrow, .decrement-arrow {
+    -fx-shape: "";
+    -fx-background-color: transparent;
+}
+
+.factorio-pane .scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color: #7F7F7F;
+    -fx-pref-width: 17px;
+    -fx-pref-height: 17px;
+}
+
+.factorio-pane .scroll-bar:horizontal .thumb,
+.factorio-pane .scroll-bar:vertical .thumb{
+    -fx-border-radius: 2;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-color: #46464B;
+    -fx-border-width: 2px;
+    -fx-border-color: #6E6E72 #000 #000 #5E5E65;
+    -fx-background-insets: 0;
+}
+
+.factorio-pane .scroll-bar:horizontal .thumb:hover,
+.factorio-pane .scroll-bar:vertical .thumb:hover{
+    -fx-border-color: #FF9F1B #000 #000 #FF9F1B;
+    -fx-background-color: #FF9F1B;
+}
+
+.factorio-pane .scroll-bar:horizontal .thumb:pressed,
+.factorio-pane .scroll-bar:vertical .thumb:pressed{
+    -fx-border-color: #000 #1E1E21 #1E1E21 #000;
+    -fx-background-color: #1E1E21;
+}
+
+.factorio-pane {
+    -fx-background-color: rgba(70, 70, 75, .75);
+    -fx-border-width: 2px;
+    -fx-border-radius: 2;
+    -fx-border-color: rgba(110, 110, 114, .75) rgba(0, 0, 0, .75) rgba(0, 0, 0, .75) rgba(94, 94, 101, .75) /*#6E6E7280 #00000080 #00000080 #5E5E6580;*/
+}
+
+.factorio-textfield {
+    -fx-padding: 0;
+    -fx-spacing: 0;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+    -fx-border-radius: 2;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-color: #E2E2E2;
+    -fx-border-width: 2px;
+    -fx-border-color: #29262A #DDDDDD #DDDDDD #29262A;
+    -fx-font: 15px "Lato";
+    -fx-text-fill: #000;
+}
+
+.factorio-serverproperty {
+    -fx-fill: #f9a838;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.factorio-progressbar-simple {
+    -fx-indeterminate-bar-flip: false;
+    -fx-indeterminate-bar-length: 14,5%;
+    -fx-indeterminate-bar-animation-time: 2.0;
+}
+
+.factorio-progressbar-simple .track {
+    -fx-background-color: #000;
+    -fx-background-radius: 0;
+}
+
+.factorio-progressbar-simple .bar {
+    -fx-background-radius: 0;
+    -fx-background-color:
+        -fx-box-border,
+        linear-gradient(to bottom, #00FF00, #003300);
+    -fx-background-insets: 0;
+    -fx-padding: 3.5px; /* 5 */
+}
