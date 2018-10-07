@@ -229,8 +229,9 @@ public class MainDocumentController implements Initializable {
     @FXML
     private void runGameButton(ActionEvent event) {
         try {
-            FactorioLauncher.modsHelper.prepareAndRun(lastServerInfo.mods, noLogRotationCheckBox.isSelected());
-            ((Stage)mainPane.getScene().getWindow()).close();
+            if (FactorioLauncher.modsHelper.prepareAndRun(lastServerInfo.mods, noLogRotationCheckBox.isSelected())) {
+                ((Stage)mainPane.getScene().getWindow()).close();
+            }
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Ошибка");
