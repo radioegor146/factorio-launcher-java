@@ -210,8 +210,8 @@
                 <Button fx:id="closeButton" layoutX="968" layoutY="18" onAction="#closeWindow" prefHeight="40" prefWidth="40" styleClass="factorio-button" text="X" />
                 <Button fx:id="minimizeButton" layoutX="924" layoutY="18" onAction="#minimizeWindow" prefHeight="40" prefWidth="40" styleClass="factorio-button" text="_" />
                 <Button fx:id="runGameButton" disable="true" layoutX="612" layoutY="515.0" onAction="#runGameButton" prefHeight="85.0" prefWidth="388" styleClass="factorio-button" text="Запустить игру" />
-                <Button layoutX="541.0" layoutY="171.0" mnemonicParsing="false" prefHeight="62.0" onAction="#selectFactorioFolderHandler" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
-            <Text fx:id="factorioFolderText" fill="WHITE" layoutX="24.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка с Factorio: Не указана" wrappingWidth="500.0">
+                <Button layoutX="541.0" layoutY="171.0" mnemonicParsing="false" onAction="#selectFactorioFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
+            <Text fx:id="factorioFolderText" fill="WHITE" layoutX="24.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка с Factorio: Не указана" wrappingWidth="500.0">
                <font>
                   <Font size="15.0" />
                </font>
@@ -226,6 +226,11 @@
                   <ProgressBar fx:id="serverLoadProgressBar" layoutY="33.0" prefHeight="7.0" prefWidth="367.0" styleClass="factorio-progressbar-simple" />
                </children>
             </Pane>
+            <CheckBox fx:id="noLogRotationCheckBox" layoutX="24.0" layoutY="249.0" mnemonicParsing="false" text="Включить --no-log-rotation" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </CheckBox>
             </children>
         </Pane>
     </children>

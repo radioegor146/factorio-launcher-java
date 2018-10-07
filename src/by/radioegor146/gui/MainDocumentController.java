@@ -36,6 +36,7 @@ import java.io.File;
 import static by.radioegor146.FactorioLauncher.config;
 import by.radioegor146.RunHelper;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 
 /**
  *
@@ -228,7 +229,7 @@ public class MainDocumentController implements Initializable {
     @FXML
     private void runGameButton(ActionEvent event) {
         try {
-            RunHelper.runFactorio();
+            FactorioLauncher.modsHelper.prepareAndRun(lastServerInfo.mods, noLogRotationCheckBox.isSelected());
             ((Stage)mainPane.getScene().getWindow()).close();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -304,6 +305,9 @@ public class MainDocumentController implements Initializable {
     
     @FXML
     private Text factorioFolderText;
+    
+    @FXML
+    private CheckBox noLogRotationCheckBox;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

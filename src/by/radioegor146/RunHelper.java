@@ -8,6 +8,7 @@ package by.radioegor146;
 import java.nio.file.Paths;
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -17,9 +18,9 @@ import javafx.scene.control.Alert.AlertType;
  * @author radioegor146
  */
 public class RunHelper {
-    public static void runFactorio() throws Exception {
+    public static void runFactorio(Path modDir, boolean noLogRotation) throws Exception {
         ProcessBuilder pBuilder = new ProcessBuilder();
-        pBuilder.directory(Paths.get(FactorioLauncher.config.factorioPath).toFile()).command(getArchFolder(), "--mod-directory", Paths.get(FactorioLauncher.config.factorioPath, "launcher", "current").toFile().getAbsolutePath()).start();
+        pBuilder.directory(Paths.get(FactorioLauncher.config.factorioPath).toFile()).command(getArchFolder(), "--mod-directory", modDir.toFile().getAbsolutePath(), noLogRotation ? "--no-log-rotation" : "").start();
     }
     
     public static String getArchFolder() throws Exception {
