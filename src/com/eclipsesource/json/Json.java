@@ -51,7 +51,7 @@ import java.io.Reader;
  * JsonArray array = Json.array(names);
  * </pre>
  */
-public final class Json {
+public class Json {
 
     private Json() {
         // not meant to be instantiated

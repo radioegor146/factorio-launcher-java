@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package by.radioegor146;
 
-import static by.radioegor146.RunHelper.getArchFolder;
 import by.radioegor146.gui.MainDocumentController;
+import by.radioegor146.helpers.GuiHelper;
+import by.radioegor146.helpers.ModsHelper;
+import by.radioegor146.helpers.RunHelper;
 import java.io.File;
-import java.util.Random;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,23 +23,17 @@ import javafx.stage.StageStyle;
  */
 public class FactorioLauncher extends Application {
 
-    public static Random random = new Random();
-    public static Config config;
-    public static ModsHelper modsHelper = new ModsHelper();
+    public static FactorioLauncherConfig config;
 
-    public static void setDialogIcon(Alert alert) {
-        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(FactorioLauncher.class.getResource("/fxml/images/icon.png").toString()));
-    }
-    
     @Override
     public void start(Stage stage) throws Exception {
         stage.getIcons().add(new Image(FactorioLauncher.class.getResource("/fxml/images/icon.png").toString()));
-        config = new Config();
+        config = new FactorioLauncherConfig();
         try {
             config.load();
-        } catch (Exception e) {
+        } catch (IOException e) {
             Alert alert = new Alert(AlertType.INFORMATION);
-            setDialogIcon(alert);
+            GuiHelper.setDialogIcon(alert);
             alert.setTitle("Factorio Launcher");
             alert.setHeaderText("Первый запуск");
             alert.setContentText("Похоже что вы запускаете лаунчер в первый раз. Пожалуйста, выберите папку Factorio.");
@@ -56,18 +47,13 @@ public class FactorioLauncher extends Application {
                 return;
             }
         }
-        try {
-            config.save();
-        } catch (Exception e) {
-
-        }
         while (true) {
             try {
-                getArchFolder(false);
+                RunHelper.getArchFolder(false);
                 break;
             } catch (Exception e) {
                 Alert alert = new Alert(AlertType.ERROR);
-                setDialogIcon(alert);
+                GuiHelper.setDialogIcon(alert);
                 alert.setTitle("Factorio Launcher");
                 alert.setHeaderText("Исполняемый файл Factorio не найден");
                 alert.setContentText("Скорее всего папка с Factorio выбрана некорректно. В папке должна быть папка bin. Выберите правильную папку");
@@ -82,7 +68,11 @@ public class FactorioLauncher extends Application {
                 }
             }
         }
-        modsHelper.prepare();
+        ModsHelper.prepare();
+        try {
+            config.save();
+        } catch (IOException e) {
+        }
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setTitle("Factorio Launcher Alpha v0.1");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainDocument.fxml"));
@@ -97,7 +87,7 @@ public class FactorioLauncher extends Application {
             controller.selectServerButtonHandler(null);
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */

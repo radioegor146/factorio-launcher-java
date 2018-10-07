@@ -287,7 +287,7 @@ public class LittleEndianInputStream extends FilterInputStream {
      * been read.
      * @exception IOException if an I/O error occurs.
      */
-    public final double readDouble() throws IOException {
+    public double readDouble() throws IOException {
 
         return Double.longBitsToDouble(this.readLong());
 
@@ -301,7 +301,7 @@ public class LittleEndianInputStream extends FilterInputStream {
      * been read.
      * @exception IOException if an I/O error occurs.
      */
-    public final float readFloat() throws IOException {
+    public float readFloat() throws IOException {
 
         return Float.intBitsToFloat(this.readInt());
 
@@ -318,7 +318,7 @@ public class LittleEndianInputStream extends FilterInputStream {
      * skipping all the bytes.
      * @exception IOException if the underlying stream throws an IOException.
      */
-    public final int skipBytes(int n) throws IOException {
+    public int skipBytes(int n) throws IOException {
 
         for (int i = 0; i < n; i += (int) skip(n - i));
         return n;

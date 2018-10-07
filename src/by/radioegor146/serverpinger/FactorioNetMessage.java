@@ -10,6 +10,7 @@ import by.radioegor146.serverpinger.utils.LittleEndianInputStream;
 import by.radioegor146.serverpinger.utils.LittleEndianOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.DatagramPacket;
 
 /**
@@ -80,7 +81,7 @@ public class FactorioNetMessage {
                 messageId = currentMessageId;
                 dos.writeShort(type | (lastServerMessageId > 0 ? 0x8000 : 0));
                 if (isFragmented) {
-                    DataStreamUtils.writeVarShort(dos, (short) fragmentId);
+                    DataStreamUtils.writeVarShort(dos, fragmentId);
                 }
             }
             if (lastServerMessageId > 0) {
@@ -89,9 +90,7 @@ public class FactorioNetMessage {
             }
             dos.write(packetBytes);
             return new DatagramPacket(bos.toByteArray(), bos.size());
-        } catch (Exception e) {
-            System.err.println("Exception in getPacket: " + e);
-            e.printStackTrace();
+        } catch (IOException e) {
             return null;
         }
     }

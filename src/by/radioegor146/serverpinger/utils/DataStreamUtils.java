@@ -16,7 +16,7 @@ public class DataStreamUtils {
 
     public static short readVarShort(LittleEndianInputStream stream) throws IOException {
         int ansValue;
-        if ((ansValue = (int) (stream.readByte() & 0xFF)) == 255) {
+        if ((ansValue = (stream.readByte() & 0xFF)) == 255) {
             ansValue = stream.readShort();
         }
         return (short) ansValue;
@@ -33,7 +33,7 @@ public class DataStreamUtils {
 
     public static int readVarInt(LittleEndianInputStream stream) throws IOException {
         int ansValue;
-        if ((ansValue = (int) (stream.readByte() & 0xFF)) == 255) {
+        if ((ansValue = (stream.readByte() & 0xFF)) == 255) {
             ansValue = stream.readInt();
         }
         return ansValue;

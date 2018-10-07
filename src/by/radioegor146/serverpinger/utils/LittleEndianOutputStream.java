@@ -163,7 +163,7 @@ public class LittleEndianOutputStream extends FilterOutputStream {
      * @param f the <code>float</code> value to be written.
      * @exception IOException if an I/O error occurs.
      */
-    public final void writeFloat(float f) throws IOException {
+    public void writeFloat(float f) throws IOException {
 
         this.writeInt(Float.floatToIntBits(f));
 
@@ -176,7 +176,7 @@ public class LittleEndianOutputStream extends FilterOutputStream {
      * @param d the <code>double</code> value to be written.
      * @exception IOException if an I/O error occurs.
      */
-    public final void writeDouble(double d) throws IOException {
+    public void writeDouble(double d) throws IOException {
 
         this.writeLong(Double.doubleToLongBits(d));
 

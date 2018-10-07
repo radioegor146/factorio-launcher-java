@@ -27,7 +27,7 @@ public class ConnectionRequestReplyMessage extends ServerMessage {
         ByteArrayInputStream bis = new ByteArrayInputStream(data);
         LittleEndianInputStream stream = new LittleEndianInputStream(bis);
         version = new Version().read(stream);
-        buildVersion = (short) stream.readShort();
+        buildVersion = stream.readShort();
         connectionRequestIDGeneratedOnClient = stream.readInt();
         connectionRequestIDGeneratedOnServer = stream.readInt();
     }

@@ -33,9 +33,7 @@ public class FactorioNetMessageBundle {
             return null;
         }
         int overallSize = 0;
-        for (FactorioNetMessage netMessage : bundleMessages.values()) {
-            overallSize += netMessage.packetBytes.length;
-        }
+        overallSize = bundleMessages.values().stream().map((netMessage) -> netMessage.packetBytes.length).reduce(overallSize, Integer::sum);
         byte[] bytes = new byte[overallSize];
         int arrayPointer = 0;
         for (FactorioNetMessage netMessage : bundleMessages.values()) {

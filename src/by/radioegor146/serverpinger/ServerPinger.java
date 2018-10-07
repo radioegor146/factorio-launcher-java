@@ -44,9 +44,7 @@ public class ServerPinger {
             working = false;
             thread.interrupt();
             return serverInfo;
-        } catch (Exception ex) {
-            System.err.println("Exception on GetServerInfo: " + ex);
-            ex.printStackTrace();
+        } catch (IOException | InterruptedException ex) {
             return new ConnectionAcceptOrDenyMessage();
         }
     }
@@ -93,9 +91,7 @@ public class ServerPinger {
                 sendMessage(message);
                 break;
             case 5:
-                type = 5;
                 if (state == 0) {
-                    System.out.println("Received server info: " + type + " data length: " + data.length);
                     ConnectionAcceptOrDenyMessage msg = new ConnectionAcceptOrDenyMessage();
                     msg.fromBytes(data);
                     serverInfo = msg;
@@ -120,8 +116,6 @@ public class ServerPinger {
                     socket.receive(packet);
                     handlePacket(packet);
                 } catch (Exception ex) {
-                    System.err.println("Exception in ReceiveThread: " + ex);
-                    ex.printStackTrace();
                     state = 2;
                     return;
                 }

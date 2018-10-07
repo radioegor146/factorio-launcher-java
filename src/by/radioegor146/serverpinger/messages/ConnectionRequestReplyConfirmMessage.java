@@ -11,6 +11,7 @@ import by.radioegor146.serverpinger.classes.ModSettings;
 import by.radioegor146.serverpinger.utils.DataStreamUtils;
 import by.radioegor146.serverpinger.utils.LittleEndianOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  *
@@ -51,9 +52,7 @@ public class ConnectionRequestReplyConfirmMessage extends ClientMessage {
                 mod.write(stream);
             }
             return bos.toByteArray();
-        } catch (Exception e) {
-            System.err.println("Error in packet encoding (?WTF?): " + e);
-            e.printStackTrace();
+        } catch (IOException e) {
             return new byte[0];
         }
     }

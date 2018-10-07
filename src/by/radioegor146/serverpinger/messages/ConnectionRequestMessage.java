@@ -9,6 +9,7 @@ import by.radioegor146.serverpinger.ClientMessage;
 import by.radioegor146.serverpinger.classes.Version;
 import by.radioegor146.serverpinger.utils.LittleEndianOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  *
@@ -29,9 +30,7 @@ public class ConnectionRequestMessage extends ClientMessage {
             stream.writeShort(buildVersion);
             stream.writeInt(connectionRequestIDGeneratedOnClient);
             return bos.toByteArray();
-        } catch (Exception e) {
-            System.err.println("Error in packet encoding (?WTF?): " + e);
-            e.printStackTrace();
+        } catch (IOException e) {
             return new byte[0];
         }
     }
