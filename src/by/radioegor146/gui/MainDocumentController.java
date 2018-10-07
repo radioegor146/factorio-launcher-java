@@ -125,6 +125,16 @@ public class MainDocumentController implements Initializable {
                     Platform.runLater(() -> {
                         playersVBox.getChildren().clear();
                     });
+                    if (!"<server>".equals(serverInfo.serverUsername)) {
+                        final String serverUsername = serverInfo.serverUsername;
+                        Platform.runLater(() -> {
+                            Text text = new Text(serverUsername);
+                            text.setWrappingWidth(220);
+                            text.setFont(Font.font("Lato", 14));
+                            text.setFill(Paint.valueOf("LIME"));
+                            playersVBox.getChildren().add(text);
+                        });
+                    }
                     for (Client client : serverInfo.clients) {
                         Platform.runLater(() -> {
                             Text text = new Text(client.username);
