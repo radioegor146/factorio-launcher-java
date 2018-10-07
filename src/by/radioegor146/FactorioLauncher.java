@@ -5,7 +5,9 @@
  */
 package by.radioegor146;
 
+import static by.radioegor146.RunHelper.getArchFolder;
 import by.radioegor146.gui.MainDocumentController;
+import java.io.File;
 import java.util.Random;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import java.io.File;
 
 /**
  *
@@ -29,13 +30,19 @@ public class FactorioLauncher extends Application {
     public static Config config;
     public static ModsHelper modsHelper = new ModsHelper();
 
+    public static void setDialogIcon(Alert alert) {
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(FactorioLauncher.class.getResource("/fxml/images/icon.png").toString()));
+    }
+    
     @Override
     public void start(Stage stage) throws Exception {
+        stage.getIcons().add(new Image(FactorioLauncher.class.getResource("/fxml/images/icon.png").toString()));
         config = new Config();
         try {
             config.load();
         } catch (Exception e) {
             Alert alert = new Alert(AlertType.INFORMATION);
+            setDialogIcon(alert);
             alert.setTitle("Factorio Launcher");
             alert.setHeaderText("Первый запуск");
             alert.setContentText("Похоже что вы запускаете лаунчер в первый раз. Пожалуйста, выберите папку Factorio.");
@@ -43,19 +50,40 @@ public class FactorioLauncher extends Application {
             DirectoryChooser chooser = new DirectoryChooser();
             chooser.setTitle("Выберите папку с Factorio");
             File f = chooser.showDialog(stage);
-            if (f != null)
+            if (f != null) {
                 config.factorioPath = f.getAbsolutePath();
-            else
+            } else {
                 return;
+            }
         }
         try {
             config.save();
         } catch (Exception e) {
-            
+
+        }
+        while (true) {
+            try {
+                getArchFolder(false);
+                break;
+            } catch (Exception e) {
+                Alert alert = new Alert(AlertType.ERROR);
+                setDialogIcon(alert);
+                alert.setTitle("Factorio Launcher");
+                alert.setHeaderText("Исполняемый файл Factorio не найден");
+                alert.setContentText("Скорее всего папка с Factorio выбрана некорректно. В папке должна быть папка bin. Выберите правильную папку");
+                alert.showAndWait();
+                DirectoryChooser chooser = new DirectoryChooser();
+                chooser.setTitle("Выберите папку с Factorio");
+                File f = chooser.showDialog(stage);
+                if (f != null) {
+                    config.factorioPath = f.getAbsolutePath();
+                } else {
+                    return;
+                }
+            }
         }
         modsHelper.prepare();
         stage.initStyle(StageStyle.TRANSPARENT);
-        stage.getIcons().add(new Image(FactorioLauncher.class.getResourceAsStream("/fxml/images/icon.png")));
         stage.setTitle("Factorio Launcher Alpha v0.1");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainDocument.fxml"));
         MainDocumentController controller = new MainDocumentController();
@@ -65,11 +93,11 @@ public class FactorioLauncher extends Application {
         stage.setScene(scene);
         stage.show();
         controller.serverInfoLoadPane.setVisible(false); // KOSTYL (fuck JAVA)
-        if (!"".equals(config.lastServer)) {
+        if (config.lastServer != null && !"".equals(config.lastServer)) {
             controller.selectServerButtonHandler(null);
         }
     }
-
+    
     /**
      * @param args the command line arguments
      */

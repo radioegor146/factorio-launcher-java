@@ -172,3 +172,21 @@
     -fx-background-insets: 0;
     -fx-padding: 3.5px; /* 5 */
 }
+
+.factorio-progressbar-load {
+    
+}
+
+.factorio-progressbar-load .track {
+    -fx-background-color: #121212;
+    -fx-background-radius: 0;
+}
+
+.factorio-progressbar-load .bar {
+    -fx-background-radius: 0;
+    -fx-background-color: #FF9E1A;
+    -fx-border-color: #D38215 #D38215 #FF9E1A #7D5116;
+    -fx-border-width: 1;
+    -fx-background-insets: 0;
+    -fx-padding: 3.5px; /* 5 */
+}

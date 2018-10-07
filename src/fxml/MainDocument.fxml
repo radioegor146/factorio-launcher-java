@@ -211,26 +211,46 @@
                 <Button fx:id="minimizeButton" layoutX="924" layoutY="18" onAction="#minimizeWindow" prefHeight="40" prefWidth="40" styleClass="factorio-button" text="_" />
                 <Button fx:id="runGameButton" disable="true" layoutX="612" layoutY="515.0" onAction="#runGameButton" prefHeight="85.0" prefWidth="388" styleClass="factorio-button" text="Запустить игру" />
                 <Button layoutX="541.0" layoutY="171.0" mnemonicParsing="false" onAction="#selectFactorioFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
-            <Text fx:id="factorioFolderText" fill="WHITE" layoutX="24.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка с Factorio: Не указана" wrappingWidth="500.0">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Text>
-            <Pane fx:id="serverInfoLoadPane" layoutX="622.0" layoutY="454.0" prefHeight="40.0" prefWidth="367.0">
-               <children>
-                  <Text fill="WHITE" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Загрузка...">
-                     <font>
+                <Text fx:id="factorioFolderText" fill="WHITE" layoutX="24.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка с Factorio: Не указана" wrappingWidth="500.0">
+                    <font>
                         <Font size="15.0" />
-                     </font>
-                  </Text>
-                  <ProgressBar fx:id="serverLoadProgressBar" layoutY="33.0" prefHeight="7.0" prefWidth="367.0" styleClass="factorio-progressbar-simple" />
-               </children>
-            </Pane>
-            <CheckBox fx:id="noLogRotationCheckBox" layoutX="24.0" layoutY="249.0" mnemonicParsing="false" text="Включить --no-log-rotation" textFill="WHITE">
+                    </font>
+                </Text>
+                <Pane fx:id="serverInfoLoadPane" layoutX="622.0" layoutY="454.0" prefHeight="40.0" prefWidth="367.0">
+                    <children>
+                        <Text fill="WHITE" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Загрузка...">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Text>
+                        <ProgressBar fx:id="serverLoadProgressBar" layoutY="33.0" prefHeight="7.0" prefWidth="367.0" styleClass="factorio-progressbar-simple" />
+                    </children>
+                </Pane>
+                <CheckBox fx:id="noLogRotationCheckBox" layoutX="24.0" layoutY="249.0" mnemonicParsing="false" text="Включить --no-log-rotation (позволяет запускать несколько копий Factorio)" textFill="WHITE">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </CheckBox>
+            <CheckBox fx:id="autoConnectCheckBox" layoutX="24.0" layoutY="279.0" mnemonicParsing="false" text="Автоподключение к серверу" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>
             </CheckBox>
+            <Pane fx:id="loadPane" layoutX="24.0" layoutY="515.0" prefHeight="85.0" prefWidth="579.0" visible="false">
+               <children>
+                  <ProgressBar fx:id="loadProgressBar" layoutY="51.0" prefHeight="7.0" prefWidth="579.0" progress="0.0" styleClass="factorio-progressbar-load" />
+                  <Text fx:id="loadInfoText" fill="#d58821" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Скачаивание ic2 1.0.1...">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="percentLoadText" fill="#d58821" layoutX="317.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100%" textAlignment="RIGHT" wrappingWidth="262.2109375">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
             </children>
         </Pane>
     </children>

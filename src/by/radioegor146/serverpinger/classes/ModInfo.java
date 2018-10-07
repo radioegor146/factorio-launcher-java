@@ -46,4 +46,21 @@ public class ModInfo {
     public String toString() {
         return name + " " + version;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (o == null || o.getClass() != getClass()) {
+            return false;
+        }
+        ModInfo e = (ModInfo) o;
+        return e.toString().equals(toString());
+    }
+
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
 }

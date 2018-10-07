@@ -1,33 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package by.radioegor146;
 
-
+import static by.radioegor146.FactorioLauncher.setDialogIcon;
+import by.radioegor146.gui.MainDocumentController;
+import by.radioegor146.gui.MainDocumentController.StateInfo;
 import by.radioegor146.serverpinger.classes.ModInfo;
 import by.radioegor146.serverpinger.classes.Version;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
-import java.nio.file.LinkOption;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.concurrent.Semaphore;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import java.io.File;
-import java.util.Comparator;
+
 /**
  *
  * @author radioegor146
  */
 public class ModsHelper {
+
     private void createModList(Path where, ModInfo[] mods) throws IOException {
         JsonObject object = new JsonObject();
         JsonArray modsArray = new JsonArray();
@@ -40,50 +46,117 @@ public class ModsHelper {
         object.add("mods", modsArray);
         Files.write(where.resolve("mod-list.json"), object.toString().getBytes(StandardCharsets.UTF_8));
     }
-    
+
     public void prepare() throws IOException {
-        if (Files.notExists(Paths.get(FactorioLauncher.config.factorioPath, "launcher")))
+        if (Files.notExists(Paths.get(FactorioLauncher.config.factorioPath, "launcher"))) {
             Files.createDirectories(Paths.get(FactorioLauncher.config.factorioPath, "launcher"));
-        if (Files.notExists(Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache")))
+        }
+        if (Files.notExists(Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache"))) {
             Files.createDirectories(Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache"));
+        }
     }
-    
-    private String getZipFileVersion(Version v) {
-        return v.majorVersion + "_" + v.minorVersion + "_" + v.subVersion;
+
+    public static void waitForRunLater() throws InterruptedException {
+        Semaphore semaphore = new Semaphore(0);
+        Platform.runLater(() -> semaphore.release());
+        semaphore.acquire();
     }
-    
-    public boolean prepareAndRun(ModInfo[] mods, boolean noLogRotation) throws Exception {
+
+    public boolean prepareAndRun(ModInfo[] mods, boolean noLogRotation, String serverIp) throws Exception {
+        Platform.runLater(()->{MainDocumentController.instance.showInfo(new StateInfo("Загрузка modcache...", 0, false));});
+        updateCacheList();
+        Platform.runLater(()->{MainDocumentController.instance.showInfo(new StateInfo("Загрузка модов...", 0.10, false));});
+        int index = 0;
+        for (ModInfo mod : mods) {
+            if (mod.name.equals("base")) {
+                continue;
+            }
+            if (!avaibleMods.contains(mod)) {
+                final int outIndex = index;
+                Platform.runLater(()->{MainDocumentController.instance.showInfo(new StateInfo("Загрузка " + mod.toString() + "...", 0.10 + outIndex * (0.7 / (mods.length - 1)), false));});
+                downloadMod(mod);
+                index++;
+            }
+        }
+        Platform.runLater(()->{MainDocumentController.instance.showInfo(new StateInfo("Подготовка к запуску", 0.90, false));});
         Path modsDir = Files.createTempDirectory("flaunchermods");
         createModList(modsDir, mods);
         boolean okWithNoMods = false;
         for (ModInfo mod : mods) {
-            if (mod.name.equals("base"))
+            if (mod.name.equals("base")) {
                 continue;
-            if (Files.notExists(Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache", mod.name + "-" + getZipFileVersion(mod.version) + ".zip")) && !okWithNoMods)
-            {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Мода не существует");
-                alert.setHeaderText("Мода '" + mod.name + " " + mod.version + "' не существует в modcache!");
-                alert.setContentText("Скорее всего либо данный мод отсутвсует на официальном модпортале, либо на пиратском модпортале. Продолжить запуск Factorio?");
-                ButtonType yesButton = new ButtonType("Да", ButtonData.YES);
-                alert.getButtonTypes().setAll(yesButton, new ButtonType("Нет", ButtonData.NO));
-                if (alert.showAndWait().get() == yesButton)
+            }
+            if (Files.notExists(Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache", mod.name + "_" + mod.version + ".zip")) && !okWithNoMods) {
+                final ButtonType yesButton = new ButtonType("Да", ButtonData.YES);
+                final SimpleObjectProperty returnButton = new SimpleObjectProperty();
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    setDialogIcon(alert);
+                    alert.setTitle("Мода не существует");
+                    alert.setHeaderText("Мода '" + mod.name + " " + mod.version + "' не существует в modcache!");
+                    alert.setContentText("Скорее всего либо данный мод отсутвсует на официальном модпортале, либо на пиратском модпортале. Продолжить запуск Factorio?");
+                    alert.getButtonTypes().setAll(yesButton, new ButtonType("Нет", ButtonData.NO));
+                    returnButton.set(alert.showAndWait().get());
+                });
+                waitForRunLater();
+                if (returnButton.get() == yesButton) {
                     okWithNoMods = true;
-                else {
+                } else {
                     Files.walk(modsDir)
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
+                            .sorted(Comparator.reverseOrder())
+                            .map(Path::toFile)
+                            .forEach(File::delete);
+                    Platform.runLater(()->{MainDocumentController.instance.hideProgess();});
                     return false;
                 }
             }
-            if (Files.exists(Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache", mod.name + "-" + getZipFileVersion(mod.version) + ".zip")))
-                Files.createLink(modsDir.resolve(mod.name + "-" + getZipFileVersion(mod.version) + ".zip"), Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache", mod.name + "-" + getZipFileVersion(mod.version) + ".zip"));
+            if (Files.exists(Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache", mod.name + "_" + mod.version + ".zip"))) {
+                Files.createSymbolicLink(modsDir.resolve(mod.name + "_" + mod.version + ".zip"), Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache", mod.name + "_" + mod.version + ".zip"));
+            }
         }
-        RunHelper.runFactorio(modsDir, noLogRotation);
+        Platform.runLater(()->{MainDocumentController.instance.showInfo(new StateInfo("Запуск", 1, false));});
+        RunHelper.runFactorio(modsDir, noLogRotation, serverIp);
+        Platform.runLater(()->{MainDocumentController.instance.showInfo(new StateInfo("Запуск", 1, true));});
         return true;
     }
-    
-    private ArrayList<ModInfo> avaibleMods = new ArrayList<>();
-    
+
+    public void updateCacheList() {
+        for (File modFile : Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache").toFile().listFiles()) {
+            String fileName = modFile.getName();
+            if (!fileName.endsWith(".zip")) {
+                continue;
+            }
+            fileName = fileName.substring(0, fileName.length() - 4);
+            String[] tData = fileName.split("_");
+            if (tData.length < 2) {
+                continue;
+            }
+            String modVersionString = tData[tData.length - 1];
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < tData.length - 1; i++) {
+                sb = sb.append(tData[i]).append((i == tData.length - 2) ? "" : "_");
+            }
+            String modName = sb.toString();
+            Version modVersion = new Version();
+            tData = modVersionString.split("\\.");
+            try {
+                modVersion.majorVersion = Short.parseShort(tData[0]);
+                modVersion.minorVersion = Short.parseShort(tData[1]);
+                modVersion.subVersion = Short.parseShort(tData[2]);
+            } catch (Exception e) {
+                continue;
+            }
+            avaibleMods.add(new ModInfo(modName, modVersion, -1));
+        }
+    }
+
+    private void downloadMod(ModInfo mod) throws Exception {
+        URL website = new URL("http://185.63.188.9/mods/" + URLEncoder.encode(mod.name, "UTF-8").replace("+", "%20") + "/" + mod.version + ".zip");
+        ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+        FileOutputStream fos = new FileOutputStream(Paths.get(FactorioLauncher.config.factorioPath, "launcher", "modcache", mod.name + "_" + mod.version + ".zip").toFile());
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+    }
+
+    public final HashSet<ModInfo> avaibleMods = new HashSet<>();
+
 }

@@ -1,4 +1,4 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (c) 2013, 2015 EclipseSource.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,57 +18,56 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- ******************************************************************************/
+ ***************************************************************************** */
 package com.eclipsesource.json;
 
 import java.io.IOException;
 
-
 @SuppressWarnings("serial") // use default serial UID
 class JsonString extends JsonValue {
 
-  private final String string;
+    private final String string;
 
-  JsonString(String string) {
-    if (string == null) {
-      throw new NullPointerException("string is null");
+    JsonString(String string) {
+        if (string == null) {
+            throw new NullPointerException("string is null");
+        }
+        this.string = string;
     }
-    this.string = string;
-  }
 
-  @Override
-  void write(JsonWriter writer) throws IOException {
-    writer.writeString(string);
-  }
-
-  @Override
-  public boolean isString() {
-    return true;
-  }
-
-  @Override
-  public String asString() {
-    return string;
-  }
-
-  @Override
-  public int hashCode() {
-    return string.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (this == object) {
-      return true;
+    @Override
+    void write(JsonWriter writer) throws IOException {
+        writer.writeString(string);
     }
-    if (object == null) {
-      return false;
+
+    @Override
+    public boolean isString() {
+        return true;
     }
-    if (getClass() != object.getClass()) {
-      return false;
+
+    @Override
+    public String asString() {
+        return string;
     }
-    JsonString other = (JsonString)object;
-    return string.equals(other.string);
-  }
+
+    @Override
+    public int hashCode() {
+        return string.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null) {
+            return false;
+        }
+        if (getClass() != object.getClass()) {
+            return false;
+        }
+        JsonString other = (JsonString) object;
+        return string.equals(other.string);
+    }
 
 }

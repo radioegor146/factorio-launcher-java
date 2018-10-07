@@ -1,4 +1,4 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (c) 2016 EclipseSource.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,59 +18,58 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- ******************************************************************************/
+ ***************************************************************************** */
 package com.eclipsesource.json;
-
 
 /**
  * An immutable object that represents a location in the parsed text.
  */
 public class Location {
 
-  /**
-   * The absolute character index, starting at 0.
-   */
-  public final int offset;
+    /**
+     * The absolute character index, starting at 0.
+     */
+    public final int offset;
 
-  /**
-   * The line number, starting at 1.
-   */
-  public final int line;
+    /**
+     * The line number, starting at 1.
+     */
+    public final int line;
 
-  /**
-   * The column number, starting at 1.
-   */
-  public final int column;
+    /**
+     * The column number, starting at 1.
+     */
+    public final int column;
 
-  Location(int offset, int line, int column) {
-    this.offset = offset;
-    this.column = column;
-    this.line = line;
-  }
-
-  @Override
-  public String toString() {
-    return line + ":" + column;
-  }
-
-  @Override
-  public int hashCode() {
-    return offset;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
+    Location(int offset, int line, int column) {
+        this.offset = offset;
+        this.column = column;
+        this.line = line;
     }
-    if (obj == null) {
-      return false;
+
+    @Override
+    public String toString() {
+        return line + ":" + column;
     }
-    if (getClass() != obj.getClass()) {
-      return false;
+
+    @Override
+    public int hashCode() {
+        return offset;
     }
-    Location other = (Location)obj;
-    return offset == other.offset && column == other.column && line == other.line;
-  }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Location other = (Location) obj;
+        return offset == other.offset && column == other.column && line == other.line;
+    }
 
 }
