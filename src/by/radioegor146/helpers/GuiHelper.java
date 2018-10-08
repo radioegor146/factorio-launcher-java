@@ -8,6 +8,7 @@ package by.radioegor146.helpers;
 import by.radioegor146.FactorioLauncher;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 /**
@@ -16,7 +17,8 @@ import javafx.stage.Stage;
  */
 public class GuiHelper {
 
-    public static void setDialogIcon(Alert alert) {
+    public static void prepareDialog(Alert alert) {
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(FactorioLauncher.class.getResource("/fxml/images/icon.png").toString()));
     }
 }

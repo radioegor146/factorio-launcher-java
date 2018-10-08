@@ -100,16 +100,16 @@ public class ModsHelper {
             if (mod.name.equals("base")) {
                 continue;
             }
-            if (Files.notExists(getModCacheDir().resolve(mod.name + "_" + mod.version + ".zip")) && !okWithNoMods) {
+            if ((Files.notExists(getModCacheDir().resolve(mod.name + "_" + mod.version + ".zip")) && Files.notExists(getModCacheDir().resolve(mod.name + "_" + mod.version)) && !Files.isDirectory(getModCacheDir().resolve(mod.name + "_" + mod.version))) && !okWithNoMods) {
                 final ButtonType yesButton = new ButtonType("Да", ButtonData.YES);
                 final SimpleObjectProperty returnButton = new SimpleObjectProperty();
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    GuiHelper.setDialogIcon(alert);
                     alert.setTitle("Мода не существует");
                     alert.setHeaderText("Мода '" + mod.name + " " + mod.version + "' не существует в modcache!");
                     alert.setContentText("Скорее всего либо данный мод отсутвсует на официальном модпортале, либо на пиратском модпортале. Продолжить запуск Factorio?");
                     alert.getButtonTypes().setAll(yesButton, new ButtonType("Нет", ButtonData.NO));
+                    GuiHelper.prepareDialog(alert);
                     returnButton.set(alert.showAndWait().get());
                 });
                 waitForRunLater();
@@ -126,9 +126,11 @@ public class ModsHelper {
                     return false;
                 }
             }
-            if (Files.exists(getModCacheDir().resolve(mod.name + "_" + mod.version + ".zip"))) {
+            if (Files.exists(getModCacheDir().resolve(mod.name + "_" + mod.version)))
+                Files.createSymbolicLink(modsDir.resolve(mod.name + "_" + mod.version), getModCacheDir().resolve(mod.name + "_" + mod.version));
+            else if (Files.exists(getModCacheDir().resolve(mod.name + "_" + mod.version + ".zip")))
                 Files.createSymbolicLink(modsDir.resolve(mod.name + "_" + mod.version + ".zip"), getModCacheDir().resolve(mod.name + "_" + mod.version + ".zip"));
-            }
+
         }
         Platform.runLater(() -> {
             MainDocumentController.instance.showInfo(new StateInfo("Запуск", 1, false));
@@ -143,10 +145,11 @@ public class ModsHelper {
     public static void updateCacheList() {
         for (File modFile : getModCacheDir().toFile().listFiles()) {
             String fileName = modFile.getName();
-            if (!fileName.endsWith(".zip")) {
+            if (!fileName.endsWith(".zip") && !modFile.isDirectory()) {
                 continue;
             }
-            fileName = fileName.substring(0, fileName.length() - 4);
+            if (fileName.endsWith(".zip"))
+                fileName = fileName.substring(0, fileName.length() - 4);
             String[] tData = fileName.split("_");
             if (tData.length < 2) {
                 continue;
@@ -166,7 +169,7 @@ public class ModsHelper {
             } catch (NumberFormatException e) {
                 continue;
             }
-            avaibleMods.add(new ModInfo(modName, modVersion, -1));
+            avaibleMods.add(new ModInfo(modName, modVersion, modFile.isDirectory() ? -2 : -1));
         }
     }
 

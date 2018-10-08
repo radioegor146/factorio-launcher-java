@@ -33,10 +33,10 @@ public class FactorioLauncher extends Application {
             config.load();
         } catch (IOException e) {
             Alert alert = new Alert(AlertType.INFORMATION);
-            GuiHelper.setDialogIcon(alert);
             alert.setTitle("Factorio Launcher");
             alert.setHeaderText("Первый запуск");
             alert.setContentText("Похоже что вы запускаете лаунчер в первый раз. Пожалуйста, выберите папку Factorio.");
+            GuiHelper.prepareDialog(alert);
             alert.showAndWait();
             DirectoryChooser chooser = new DirectoryChooser();
             chooser.setTitle("Выберите папку с Factorio");
@@ -53,10 +53,10 @@ public class FactorioLauncher extends Application {
                 break;
             } catch (Exception e) {
                 Alert alert = new Alert(AlertType.ERROR);
-                GuiHelper.setDialogIcon(alert);
                 alert.setTitle("Factorio Launcher");
                 alert.setHeaderText("Исполняемый файл Factorio не найден");
                 alert.setContentText("Скорее всего папка с Factorio выбрана некорректно. В папке должна быть папка bin. Выберите правильную папку");
+                GuiHelper.prepareDialog(alert);
                 alert.showAndWait();
                 DirectoryChooser chooser = new DirectoryChooser();
                 chooser.setTitle("Выберите папку с Factorio");

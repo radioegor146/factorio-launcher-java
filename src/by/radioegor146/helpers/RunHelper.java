@@ -52,10 +52,10 @@ public class RunHelper {
                 if (shouldshow) {
                     Platform.runLater(() -> {
                         Alert alert = new Alert(AlertType.WARNING);
-                        GuiHelper.setDialogIcon(alert);
                         alert.setTitle("Неправильный запуск");
                         alert.setHeaderText("Factorio своей архитектуры (" + rightArch + ") не найдена!");
                         alert.setContentText("Скорее всего либо Factorio, либо Java была установлена не для нужной архитектуры (" + rightArch + "). Была запущена Factorio другой архитектуры (" + nowArch + ").");
+                        GuiHelper.prepareDialog(alert);
                         alert.showAndWait();
                     });
                     waitForRunLater();

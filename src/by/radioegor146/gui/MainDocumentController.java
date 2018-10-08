@@ -84,10 +84,10 @@ public class MainDocumentController implements Initializable {
                     break;
                 } catch (Exception e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    GuiHelper.setDialogIcon(alert);
                     alert.setTitle("Factorio Launcher");
                     alert.setHeaderText("Исполняемый файл Factorio не найден");
                     alert.setContentText("Скорее всего папка с Factorio выбрана некорректно. В папке должна быть папка bin. Выберите правильную папку");
+                    GuiHelper.prepareDialog(alert);
                     alert.showAndWait();
                 }
             } else {
@@ -312,10 +312,10 @@ public class MainDocumentController implements Initializable {
             } catch (Exception e) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    GuiHelper.setDialogIcon(alert);
                     alert.setTitle("Ошибка");
                     alert.setHeaderText("Произошла ошибка при запуске Factorio");
                     alert.setContentText(e.getMessage());
+                    GuiHelper.prepareDialog(alert);
                     alert.showAndWait();
                     runGameButton.setDisable(false);
                 });
@@ -438,6 +438,7 @@ public class MainDocumentController implements Initializable {
 
     public void hideProgess() {
         loadPane.setVisible(false);
+        runGameButton.setDisable(false);
     }
 
     public static class StateInfo {
