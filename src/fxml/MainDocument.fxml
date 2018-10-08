@@ -39,7 +39,7 @@
                                 <Font size="15.0" />
                             </font>
                         </Text>
-                        <CheckBox fx:id="noLogRotationCheckBox" layoutX="15.0" layoutY="339.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="556.0" text="Включить --no-log-rotation (позволяет запускать несколько копий Factorio)" textFill="WHITE">
+                        <CheckBox fx:id="noLogRotationCheckBox" layoutX="15.0" layoutY="339.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="556.0" text="--no-log-rotation (позволяет запускать несколько копий Factorio)" textFill="WHITE">
                             <font>
                                 <Font size="15.0" />
                             </font>
