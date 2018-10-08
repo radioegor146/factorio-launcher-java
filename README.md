@@ -3,7 +3,7 @@ Factorio launcher written in Java
 
 Contains a ready to compile NetBeans JavaFX project  
 
-# Usage on windows
+# Usage on Windows
 Install JRE: https://java.com/ru/download/  
 Run FactorioLauncher.exe as admin (it needs symlinks to work well and save your free space)  
 
