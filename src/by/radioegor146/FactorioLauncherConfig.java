@@ -18,11 +18,11 @@ import java.nio.file.Paths;
  *
  * @author radioegor146
  */
-public class FactorioLauncherConfig {
+public final class FactorioLauncherConfig {
 
-    public String factorioPath = "";
-    public String modCachePath = "";
-    public String tempPath = "";
+    public String factorioPath = "Не задано";
+    public String modCachePath = OSHelper.getDefaultModCacheDir().toFile().getAbsolutePath();;
+    public String tempPath = Files.createTempDirectory("flauncherprobe").getParent().toRealPath().toFile().getAbsolutePath();;
     public String lastServer = "";
     public boolean noLogRotation = false;
     public boolean autoConnect = false;
@@ -30,25 +30,12 @@ public class FactorioLauncherConfig {
     private final Path configFile;
 
     public FactorioLauncherConfig() throws IOException {
-        this.configFile = OSHelper.getConfigPath();
-        factorioPath = "Не задано";
-        modCachePath = OSHelper.getDefaultModCacheDir().toFile().getAbsolutePath();
-        tempPath = Files.createTempDirectory("flauncherprobe").getParent().toRealPath().toFile().getAbsolutePath();
-        lastServer = "";
-        noLogRotation = false;
-        autoConnect = false;
+        this(OSHelper.getConfigPath());
     }
 
     public FactorioLauncherConfig(Path configFile) throws IOException {
-        super();
         this.configFile = configFile;
-        JsonObject object = Json.parse(new String(Files.readAllBytes(configFile), StandardCharsets.UTF_8)).asObject();
-        factorioPath = object.getString("factoriopath", factorioPath);
-        modCachePath = object.getString("modcachepath", modCachePath);
-        tempPath = object.getString("temppath", tempPath);
-        lastServer = object.getString("lastserver", lastServer);
-        noLogRotation = object.getBoolean("nologrotation", noLogRotation);
-        autoConnect = object.getBoolean("autoconnect", autoConnect);
+        load();
     }
 
     public void load() throws IOException {
