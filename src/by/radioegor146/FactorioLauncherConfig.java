@@ -40,24 +40,25 @@ public class FactorioLauncherConfig {
     }
 
     public FactorioLauncherConfig(Path configFile) throws IOException {
+        super();
         this.configFile = configFile;
         JsonObject object = Json.parse(new String(Files.readAllBytes(configFile), StandardCharsets.UTF_8)).asObject();
-        factorioPath = object.getString("factoriopath", "Не задано");
-        modCachePath = object.getString("modcachepath", Paths.get(System.getProperty("user.home"), "FLauncher", "modcache").toFile().getAbsolutePath());
-        tempPath = object.getString("temppath", Files.createTempDirectory("flauncherprobe").getParent().toRealPath().toFile().getAbsolutePath());
-        lastServer = object.getString("lastserver", "");
-        noLogRotation = object.getBoolean("nologrotation", false);
-        autoConnect = object.getBoolean("autoconnect", false);
+        factorioPath = object.getString("factoriopath", factorioPath);
+        modCachePath = object.getString("modcachepath", modCachePath);
+        tempPath = object.getString("temppath", tempPath);
+        lastServer = object.getString("lastserver", lastServer);
+        noLogRotation = object.getBoolean("nologrotation", noLogRotation);
+        autoConnect = object.getBoolean("autoconnect", autoConnect);
     }
 
     public void load() throws IOException {
         JsonObject object = Json.parse(new String(Files.readAllBytes(configFile), StandardCharsets.UTF_8)).asObject();
-        factorioPath = object.getString("factoriopath", "Не задано");
-        modCachePath = object.getString("modcachepath", Paths.get(System.getProperty("user.home"), "FLauncher", "modcache").toFile().getAbsolutePath());
-        tempPath = object.getString("temppath", Files.createTempDirectory("flauncherprobe").getParent().toRealPath().toFile().getAbsolutePath());
-        lastServer = object.getString("lastserver", "");
-        noLogRotation = object.getBoolean("nologrotation", false);
-        autoConnect = object.getBoolean("autoconnect", false);
+        factorioPath = object.getString("factoriopath", factorioPath);
+        modCachePath = object.getString("modcachepath", modCachePath);
+        tempPath = object.getString("temppath", tempPath);
+        lastServer = object.getString("lastserver", lastServer);
+        noLogRotation = object.getBoolean("nologrotation", noLogRotation);
+        autoConnect = object.getBoolean("autoconnect", autoConnect);
     }
 
     public void save() throws IOException {
