@@ -35,7 +35,6 @@ public final class FactorioLauncherConfig {
 
     public FactorioLauncherConfig(Path configFile) throws IOException {
         this.configFile = configFile;
-        load();
     }
 
     public void load() throws IOException {
