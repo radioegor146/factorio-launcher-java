@@ -1,4 +1,4 @@
-# Factorio Java Launcher
+# Factorio Java Launcher ![Build master](https://travis-ci.org/radioegor146/factorio-launcher-java.svg?branch=master)
 Factorio launcher written in Java  
 
 Contains a ready to compile NetBeans JavaFX project  
