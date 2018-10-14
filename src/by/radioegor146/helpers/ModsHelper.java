@@ -143,6 +143,7 @@ public class ModsHelper {
     }
 
     public static void updateCacheList() {
+        avaibleMods.clear();
         for (File modFile : getModCacheDir().toFile().listFiles()) {
             String fileName = modFile.getName();
             if (!fileName.endsWith(".zip") && !modFile.isDirectory()) {
@@ -174,7 +175,7 @@ public class ModsHelper {
     }
 
     private static void downloadMod(ModInfo mod) throws Exception {
-        URL website = new URL("http://185.63.188.9/mods/" + URLEncoder.encode(mod.name, "UTF-8").replace("+", "%20") + "/" + mod.version + ".zip");
+        URL website = new URL("https://factorio-launcher-mods.storage.googleapis.com/" + URLEncoder.encode(mod.name, "UTF-8").replace("+", "%20") + "/" + mod.version + ".zip");
         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
         FileOutputStream fos = new FileOutputStream(getModCacheDir().resolve(mod.name + "_" + mod.version + ".zip").toFile());
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
