@@ -28,7 +28,7 @@
                         </Text>
                         <Button layoutX="499.0" layoutY="108.0" mnemonicParsing="false" onAction="#selectFactorioFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
                         <Button layoutX="499.0" layoutY="246.0" mnemonicParsing="false" onAction="#selectTempFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
-                        <Button layoutX="499.0" layoutY="177.0" mnemonicParsing="false" onAction="#selectModCacheFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
+                        <Button layoutX="499.0" layoutY="177.0" mnemonicParsing="false" onAction="#selectLauncherFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
                         <Text fx:id="modCacheFolder" fill="WHITE" layoutX="14.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка для кэша модов: Не указана" wrappingWidth="452.0">
                             <font>
                                 <Font size="15.0" />

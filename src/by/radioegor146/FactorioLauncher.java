@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -22,7 +23,7 @@ import javafx.stage.StageStyle;
  * @author radioegor146
  */
 public class FactorioLauncher extends Application {
-
+    
     public static FactorioLauncherConfig config;
 
     @Override
@@ -78,7 +79,8 @@ public class FactorioLauncher extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainDocument.fxml"));
         MainDocumentController controller = new MainDocumentController();
         loader.setController(controller);
-        Scene scene = new Scene(loader.load());
+        Object sceneObject = loader.load();
+        Scene scene = new Scene((Parent)sceneObject);
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);
         stage.show();

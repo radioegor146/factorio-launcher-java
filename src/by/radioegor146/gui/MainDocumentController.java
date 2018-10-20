@@ -65,9 +65,9 @@ public class MainDocumentController implements Initializable {
         ((Stage) mainPane.getScene().getWindow()).setIconified(true);
     }
 
-    private String lastOkServer = "";
+    public String lastOkServer = "";
 
-    private ConnectionAcceptOrDenyMessage lastServerInfo = null;
+    public ConnectionAcceptOrDenyMessage lastServerInfo = null;
 
     @FXML
     private void selectFactorioFolderHandler(ActionEvent event) {
@@ -96,24 +96,24 @@ public class MainDocumentController implements Initializable {
             }
         }
         factorioFolderText.setText("Папка с Factorio: " + FactorioLauncher.config.factorioPath);
-        modCacheFolder.setText("Папка для кэша модов: " + FactorioLauncher.config.modCachePath);
+        modCacheFolder.setText("Папка для лаунчера: " + FactorioLauncher.config.launcherPath);
         tempFolderText.setText("Папка для временных целей: " + FactorioLauncher.config.tempPath);
     }
 
     @FXML
-    private void selectModCacheFolderHandler(ActionEvent event) {
+    private void selectLauncherFolderHandler(ActionEvent event) {
         FactorioLauncherConfig config = FactorioLauncher.config;
-        String prevPath = config.modCachePath.substring(0);
+        String prevPath = config.launcherPath.substring(0);
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Выберите папку с для кэша модов");
+        chooser.setTitle("Выберите папку с для лаунчера");
         File f = chooser.showDialog(mainPane.getScene().getWindow());
         if (f != null) {
-            config.modCachePath = f.getAbsolutePath();
+            config.launcherPath = f.getAbsolutePath();
         } else {
-            config.modCachePath = prevPath;
+            config.launcherPath = prevPath;
         }
         factorioFolderText.setText("Папка с Factorio: " + FactorioLauncher.config.factorioPath);
-        modCacheFolder.setText("Папка для кэша модов: " + FactorioLauncher.config.modCachePath);
+        modCacheFolder.setText("Папка для лаунчера: " + FactorioLauncher.config.launcherPath);
         tempFolderText.setText("Папка для временных целей: " + FactorioLauncher.config.tempPath);
     }
 
@@ -130,7 +130,7 @@ public class MainDocumentController implements Initializable {
             config.tempPath = prevPath;
         }
         factorioFolderText.setText("Папка с Factorio: " + FactorioLauncher.config.factorioPath);
-        modCacheFolder.setText("Папка для кэша модов: " + FactorioLauncher.config.modCachePath);
+        modCacheFolder.setText("Папка для лаунчера: " + FactorioLauncher.config.launcherPath);
         tempFolderText.setText("Папка для временных целей: " + FactorioLauncher.config.tempPath);
     }
 
@@ -314,11 +314,12 @@ public class MainDocumentController implements Initializable {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Ошибка");
                     alert.setHeaderText("Произошла ошибка при запуске Factorio");
-                    alert.setContentText(e.getMessage());
+                    alert.setContentText(e.toString());
                     GuiHelper.prepareDialog(alert);
                     alert.showAndWait();
                     runGameButton.setDisable(false);
                 });
+                this.showInfo(new StateInfo("", -1, false));
             }
         }).start();
     }
@@ -414,6 +415,10 @@ public class MainDocumentController implements Initializable {
             closeWindow(null);
             return;
         }
+        if (stateInfo.progress < 0) {
+            loadPane.setVisible(false);
+            return;
+        }
         loadPane.setVisible(true);
         loadInfoText.setText(stateInfo.infoText);
         percentLoadText.setText(Math.round(stateInfo.progress * 100) + "%");
@@ -427,7 +432,7 @@ public class MainDocumentController implements Initializable {
         errorText.setVisible(false);
         serverInfoVBox.setVisible(false);
         factorioFolderText.setText("Папка с Factorio: " + FactorioLauncher.config.factorioPath);
-        modCacheFolder.setText("Папка для кэша модов: " + FactorioLauncher.config.modCachePath);
+        modCacheFolder.setText("Папка для лаунчера: " + FactorioLauncher.config.launcherPath);
         tempFolderText.setText("Папка для временных целей: " + FactorioLauncher.config.tempPath);
         lastOkServer = FactorioLauncher.config.lastServer;
         serverIpField.setText(FactorioLauncher.config.lastServer);
