@@ -6,6 +6,7 @@ import by.radioegor146.helpers.ModsHelper;
 import by.radioegor146.helpers.RunHelper;
 import java.io.File;
 import java.io.IOException;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,9 +26,12 @@ import javafx.stage.StageStyle;
 public class FactorioLauncher extends Application {
     
     public static FactorioLauncherConfig config;
+    
+    public static ResourceBundle currentBundle;
 
     @Override
     public void start(Stage stage) throws Exception {
+        currentBundle = ResourceBundle.getBundle("bundles.MainBundle");
         stage.getIcons().add(new Image(FactorioLauncher.class.getResource("/fxml/images/icon.png").toString()));
         config = new FactorioLauncherConfig();
         try {
@@ -35,12 +39,12 @@ public class FactorioLauncher extends Application {
         } catch (IOException e) {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Factorio Launcher");
-            alert.setHeaderText("Первый запуск");
-            alert.setContentText("Похоже что вы запускаете лаунчер в первый раз. Пожалуйста, выберите папку Factorio.");
+            alert.setHeaderText(currentBundle.getString("first-run"));
+            alert.setContentText(currentBundle.getString("first-run-text"));
             GuiHelper.prepareDialog(alert);
             alert.showAndWait();
             DirectoryChooser chooser = new DirectoryChooser();
-            chooser.setTitle("Выберите папку с Factorio");
+            chooser.setTitle(currentBundle.getString("select-factorio-folder"));
             File f = chooser.showDialog(stage);
             if (f != null) {
                 config.factorioPath = f.getAbsolutePath();
@@ -50,17 +54,17 @@ public class FactorioLauncher extends Application {
         }
         while (true) {
             try {
-                RunHelper.getArchFolder(false);
+                RunHelper.getArchBinFile(false);
                 break;
             } catch (Exception e) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Factorio Launcher");
-                alert.setHeaderText("Исполняемый файл Factorio не найден");
-                alert.setContentText("Скорее всего папка с Factorio выбрана некорректно. В папке должна быть папка bin. Выберите правильную папку");
+                alert.setHeaderText(currentBundle.getString("bin-file-is-not-found"));
+                alert.setContentText(currentBundle.getString("incorrect-factorio-folder"));
                 GuiHelper.prepareDialog(alert);
                 alert.showAndWait();
                 DirectoryChooser chooser = new DirectoryChooser();
-                chooser.setTitle("Выберите папку с Factorio");
+                chooser.setTitle(currentBundle.getString("select-factorio-folder"));
                 File f = chooser.showDialog(stage);
                 if (f != null) {
                     config.factorioPath = f.getAbsolutePath();
@@ -75,8 +79,9 @@ public class FactorioLauncher extends Application {
         } catch (IOException e) {
         }
         stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setTitle("Factorio Launcher Alpha v0.1");
+        stage.setTitle("Factorio Launcher");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainDocument.fxml"));
+        loader.setResources(currentBundle);
         MainDocumentController controller = new MainDocumentController();
         loader.setController(controller);
         Object sceneObject = loader.load();

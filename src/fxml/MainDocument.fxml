@@ -17,40 +17,6 @@
     <children>
         <Pane prefHeight="624.0" prefWidth="1024.0" styleClass="main-pane">
             <children>
-                <Pane layoutX="23.0" layoutY="73.0" prefHeight="431.0" prefWidth="579.0" styleClass="factorio-pane">
-                    <children>
-                        <Button fx:id="selectServerButton" defaultButton="true" layoutX="14.0" layoutY="46.0" onAction="#selectServerButtonHandler" prefHeight="55" prefWidth="547.0" styleClass="factorio-button" text="Выбрать сервер" />
-                        <TextField fx:id="serverIpField" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="547.0" styleClass="factorio-textfield" />
-                        <Text fx:id="factorioFolderText" fill="WHITE" layoutX="14.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка с Factorio: Не указана" wrappingWidth="452.0">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Text>
-                        <Button layoutX="499.0" layoutY="108.0" mnemonicParsing="false" onAction="#selectFactorioFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
-                        <Button layoutX="499.0" layoutY="246.0" mnemonicParsing="false" onAction="#selectTempFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
-                        <Button layoutX="499.0" layoutY="177.0" mnemonicParsing="false" onAction="#selectLauncherFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
-                        <Text fx:id="modCacheFolder" fill="WHITE" layoutX="14.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка для кэша модов: Не указана" wrappingWidth="452.0">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Text>
-                        <Text fx:id="tempFolderText" fill="WHITE" layoutX="14.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Папка для временных целей: Не указана" wrappingWidth="452.0">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Text>
-                        <CheckBox fx:id="noLogRotationCheckBox" layoutX="15.0" layoutY="339.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="556.0" text="--no-log-rotation (позволяет запускать несколько копий Factorio)" textFill="WHITE">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </CheckBox>
-                        <CheckBox fx:id="autoConnectCheckBox" layoutX="14.0" layoutY="378.0" mnemonicParsing="false" text="Автоподключение к серверу" textFill="WHITE">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </CheckBox>
-                    </children>
-                </Pane>
                 <Pane onMouseDragged="#dragWindow" onMousePressed="#dragWindow" prefHeight="62" prefWidth="900" />
                 <ScrollPane fitToWidth="true" layoutX="612" layoutY="74" prefHeight="430" prefWidth="388" styleClass="factorio-pane">
                     <content>
@@ -77,12 +43,12 @@
                                                 </Text>
                                                 <HBox disable="true">
                                                     <children>
-                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Версия игры:" wrappingWidth="100.0">
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="%game-version-text" wrappingWidth="100.0">
                                                             <font>
                                                                 <Font name="System Bold" size="14.0" />
                                                             </font>
                                                         </Text>
-                                                        <Text fx:id="gameVersionText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="GameVersion" wrappingWidth="220.0">
+                                                        <Text fx:id="gameVersionText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%game-version-text" wrappingWidth="220.0">
                                                             <font>
                                                                 <Font size="14.0" />
                                                             </font>
@@ -97,7 +63,7 @@
                                                 </HBox>
                                                 <HBox>
                                                     <children>
-                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Игроков:" wrappingWidth="100.0">
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="%players-count-text" wrappingWidth="100.0">
                                                             <font>
                                                                 <Font name="System Bold" size="14.0" />
                                                             </font>
@@ -114,7 +80,7 @@
                                                 </HBox>
                                                 <HBox prefWidth="360.0">
                                                     <children>
-                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Пиратка:" wrappingWidth="100.0">
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="%license-server-text" wrappingWidth="100.0">
                                                             <font>
                                                                 <Font name="System Bold" size="14.0" />
                                                             </font>
@@ -131,12 +97,12 @@
                                                 </HBox>
                                                 <HBox layoutX="10.0" layoutY="114.0" prefWidth="360.0">
                                                     <children>
-                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Пароль:" wrappingWidth="100.0">
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="%has-password-text" wrappingWidth="100.0">
                                                             <font>
                                                                 <Font name="System Bold" size="14.0" />
                                                             </font>
                                                         </Text>
-                                                        <Text fx:id="passwordNeededText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="PasswordNeed" wrappingWidth="220.0">
+                                                        <Text fx:id="passwordNeededText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%has-password-text" wrappingWidth="220.0">
                                                             <font>
                                                                 <Font size="14.0" />
                                                             </font>
@@ -151,7 +117,7 @@
                                                 </HBox>
                                                 <HBox>
                                                     <children>
-                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Время в игре:" wrappingWidth="100.0">
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="%time-in-game-text" wrappingWidth="100.0">
                                                             <font>
                                                                 <Font name="System Bold" size="14.0" />
                                                             </font>
@@ -168,7 +134,7 @@
                                                 </HBox>
                                                 <HBox layoutX="10.0" layoutY="117.0">
                                                     <children>
-                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Моды:" wrappingWidth="100.0">
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="%mods-text" wrappingWidth="100.0">
                                                             <font>
                                                                 <Font name="System Bold" size="14.0" />
                                                             </font>
@@ -181,7 +147,7 @@
                                                 </HBox>
                                                 <HBox layoutX="10.0" layoutY="137.0">
                                                     <children>
-                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Игроки:" wrappingWidth="100.0">
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="%players-text" wrappingWidth="100.0">
                                                             <font>
                                                                 <Font name="System Bold" size="14.0" />
                                                             </font>
@@ -194,7 +160,7 @@
                                                 </HBox>
                                                 <HBox layoutX="10.0" layoutY="177.0">
                                                     <children>
-                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Админы:" wrappingWidth="100.0">
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="%admins-text" wrappingWidth="100.0">
                                                             <font>
                                                                 <Font name="System Bold" size="14.0" />
                                                             </font>
@@ -207,7 +173,7 @@
                                                 </HBox>
                                                 <HBox layoutX="10.0" layoutY="217.0">
                                                     <children>
-                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Банлист:" wrappingWidth="100.0">
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="%banlist-text" wrappingWidth="100.0">
                                                             <font>
                                                                 <Font name="System Bold" size="14.0" />
                                                             </font>
@@ -220,7 +186,7 @@
                                                 </HBox>
                                                 <HBox layoutX="10.0" layoutY="257.0">
                                                     <children>
-                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="Вайтлист:" wrappingWidth="100.0">
+                                                        <Text fill="#f9a838" strokeType="OUTSIDE" strokeWidth="0.0" text="%whitelist-text" wrappingWidth="100.0">
                                                             <font>
                                                                 <Font name="System Bold" size="14.0" />
                                                             </font>
@@ -241,10 +207,10 @@
                 </ScrollPane>
                 <Button fx:id="closeButton" layoutX="968" layoutY="18" onAction="#closeWindow" prefHeight="40" prefWidth="40" styleClass="factorio-button" text="X" />
                 <Button fx:id="minimizeButton" layoutX="924" layoutY="18" onAction="#minimizeWindow" prefHeight="40" prefWidth="40" styleClass="factorio-button" text="_" />
-                <Button fx:id="runGameButton" disable="true" layoutX="612" layoutY="515.0" onAction="#runGameButton" prefHeight="85.0" prefWidth="388" styleClass="factorio-button" text="Запустить игру" />
+                <Button fx:id="runGameButton" disable="true" layoutX="612" layoutY="515.0" onAction="#runGameButton" prefHeight="85.0" prefWidth="388" styleClass="factorio-button" text="%run-game-button" />
                 <Pane fx:id="serverInfoLoadPane" layoutX="622.0" layoutY="454.0" prefHeight="40.0" prefWidth="367.0">
                     <children>
-                        <Text fill="WHITE" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Загрузка...">
+                        <Text fill="WHITE" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%loading-text">
                             <font>
                                 <Font size="15.0" />
                             </font>
@@ -267,6 +233,79 @@
                         </Text>
                     </children>
                 </Pane>
+            <TabPane layoutX="24.0" layoutY="74.0" prefHeight="430.0" prefWidth="579.0" styleClass="factorio-tabpane" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="%servers-tab">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                                  <Pane styleClass="factorio-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <children>
+                                          <Button fx:id="selectServerButton" defaultButton="true" layoutX="14.0" layoutY="46.0" onAction="#selectServerButtonHandler" prefHeight="55" prefWidth="547.0" styleClass="factorio-button" text="%select-server-button" />
+                                          <TextField fx:id="serverIpField" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="547.0" styleClass="factorio-textfield" />
+                                      </children>
+                                  </Pane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                     <styleClass>
+                        <String fx:value="factorio-button" />
+                        <String fx:value="factorio-tab" />
+                     </styleClass>
+                </Tab>
+                <Tab text="%config-tab">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Pane styleClass="factorio-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Text fx:id="factorioFolderText" fill="WHITE" layoutX="21.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%factorio-folder-text" wrappingWidth="452.0">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <Button layoutX="499.0" layoutY="18.0" mnemonicParsing="false" onAction="#selectFactorioFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
+                                    <Button layoutX="499.0" layoutY="176.0" mnemonicParsing="false" onAction="#selectTempFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
+                                    <Button layoutX="499.0" layoutY="97.0" mnemonicParsing="false" onAction="#selectLauncherFolderHandler" prefHeight="62.0" prefWidth="62.0" style="-fx-background-image: url(/fxml/images/folder-icon.png); -fx-background-position: center; -fx-background-repeat: no-repeat;" styleClass="factorio-button" />
+                                    <Text fx:id="launcherFolderText" fill="WHITE" layoutX="21.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%launcher-folder-text" wrappingWidth="452.0">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="tempFolderText" fill="WHITE" layoutX="21.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%temp-folder-text" wrappingWidth="452.0">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <CheckBox fx:id="noLogRotationCheckBox" layoutX="12.0" layoutY="252.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="556.0" text="%no-log-rotation-checkbox" textFill="WHITE">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox fx:id="autoConnectCheckBox" layoutX="12.0" layoutY="284.0" mnemonicParsing="false" text="%autoconnect-checkbox" textFill="WHITE">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox fx:id="useSymlinksCheckBox" layoutX="12.0" layoutY="316.0" mnemonicParsing="false" text="%use-symlinks-checkbox" textFill="WHITE">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <TextField fx:id="additionalArgsField" layoutX="249.0" layoutY="359.0" prefHeight="25.0" prefWidth="314.0" styleClass="factorio-textfield" />
+                                    <Label layoutX="14.0" layoutY="361.0" prefHeight="21.0" prefWidth="227.0" text="%additional-args-text" textFill="WHITE" />
+                                 </children>
+                              </Pane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                     <styleClass>
+                        <String fx:value="factorio-button" />
+                        <String fx:value="factorio-tab" />
+                     </styleClass>
+                </Tab>
+              </tabs>
+            </TabPane>
             </children>
         </Pane>
     </children>
