@@ -20,12 +20,14 @@ import java.nio.file.Paths;
  */
 public final class FactorioLauncherConfig {
 
-    public String factorioPath = "Не задано";
-    public String modCachePath = OSHelper.getDefaultModCacheDir().toFile().getAbsolutePath();;
+    public String factorioPath = "-";
+    public String launcherPath = OSHelper.getDefaultModCacheDir().toFile().getAbsolutePath();;
     public String tempPath = Files.createTempDirectory("flauncherprobe").getParent().toRealPath().toFile().getAbsolutePath();;
     public String lastServer = "";
     public boolean noLogRotation = false;
     public boolean autoConnect = false;
+    public boolean useSymlinks = !OSHelper.isWindows();
+    public String additionalArgs = "";
 
     private final Path configFile;
 
@@ -40,21 +42,25 @@ public final class FactorioLauncherConfig {
     public void load() throws IOException {
         JsonObject object = Json.parse(new String(Files.readAllBytes(configFile), StandardCharsets.UTF_8)).asObject();
         factorioPath = object.getString("factoriopath", factorioPath);
-        modCachePath = object.getString("modcachepath", modCachePath);
+        launcherPath = object.getString("launcherpath", launcherPath);
         tempPath = object.getString("temppath", tempPath);
         lastServer = object.getString("lastserver", lastServer);
         noLogRotation = object.getBoolean("nologrotation", noLogRotation);
         autoConnect = object.getBoolean("autoconnect", autoConnect);
+        useSymlinks = object.getBoolean("usesymlinks", useSymlinks);
+        additionalArgs = object.getString("additionalargs", additionalArgs);
     }
 
     public void save() throws IOException {
         JsonObject object = new JsonObject();
         object.add("factoriopath", factorioPath);
-        object.add("modcachepath", modCachePath);
+        object.add("modcachepath", launcherPath);
         object.add("temppath", tempPath);
         object.add("lastserver", lastServer);
         object.add("nologrotation", noLogRotation);
         object.add("autoconnect", autoConnect);
+        object.add("usesymlinks", useSymlinks);
+        object.add("additionalargs", additionalArgs);
         Files.write(configFile, object.toString().getBytes(StandardCharsets.UTF_8));
     }
 }

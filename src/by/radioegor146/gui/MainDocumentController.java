@@ -46,12 +46,16 @@ import javafx.stage.Stage;
 public class MainDocumentController implements Initializable {
 
     public static MainDocumentController instance;
+    
+    private ResourceBundle bundle;
 
     @FXML
     private void closeWindow(ActionEvent event) {
         FactorioLauncher.config.lastServer = lastOkServer;
         FactorioLauncher.config.autoConnect = autoConnectCheckBox.isSelected();
         FactorioLauncher.config.noLogRotation = noLogRotationCheckBox.isSelected();
+        FactorioLauncher.config.useSymlinks = useSymlinksCheckBox.isSelected();
+        FactorioLauncher.config.additionalArgs = additionalArgsField.getText();
         try {
             FactorioLauncher.config.save();
         } catch (IOException e) {
@@ -65,9 +69,9 @@ public class MainDocumentController implements Initializable {
         ((Stage) mainPane.getScene().getWindow()).setIconified(true);
     }
 
-    private String lastOkServer = "";
+    public String lastOkServer = "";
 
-    private ConnectionAcceptOrDenyMessage lastServerInfo = null;
+    public ConnectionAcceptOrDenyMessage lastServerInfo = null;
 
     @FXML
     private void selectFactorioFolderHandler(ActionEvent event) {
@@ -75,18 +79,18 @@ public class MainDocumentController implements Initializable {
         String prevPath = config.factorioPath.substring(0);
         while (true) {
             DirectoryChooser chooser = new DirectoryChooser();
-            chooser.setTitle("Выберите папку с Factorio");
+            chooser.setTitle(bundle.getString("select-launcher-folder"));
             File f = chooser.showDialog(mainPane.getScene().getWindow());
             if (f != null) {
                 config.factorioPath = f.getAbsolutePath();
                 try {
-                    RunHelper.getArchFolder(false);
+                    RunHelper.getArchBinFile(false);
                     break;
                 } catch (Exception e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Factorio Launcher");
-                    alert.setHeaderText("Исполняемый файл Factorio не найден");
-                    alert.setContentText("Скорее всего папка с Factorio выбрана некорректно. В папке должна быть папка bin. Выберите правильную папку");
+                    alert.setHeaderText(bundle.getString("bin-file-is-not-found"));
+                    alert.setContentText(bundle.getString("incorrect-factorio-folder"));
                     GuiHelper.prepareDialog(alert);
                     alert.showAndWait();
                 }
@@ -95,26 +99,22 @@ public class MainDocumentController implements Initializable {
                 return;
             }
         }
-        factorioFolderText.setText("Папка с Factorio: " + FactorioLauncher.config.factorioPath);
-        modCacheFolder.setText("Папка для кэша модов: " + FactorioLauncher.config.modCachePath);
-        tempFolderText.setText("Папка для временных целей: " + FactorioLauncher.config.tempPath);
+        updateFolderTexts();
     }
 
     @FXML
-    private void selectModCacheFolderHandler(ActionEvent event) {
+    private void selectLauncherFolderHandler(ActionEvent event) {
         FactorioLauncherConfig config = FactorioLauncher.config;
-        String prevPath = config.modCachePath.substring(0);
+        String prevPath = config.launcherPath.substring(0);
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Выберите папку с для кэша модов");
+        chooser.setTitle(bundle.getString("select-launcher-folder"));
         File f = chooser.showDialog(mainPane.getScene().getWindow());
         if (f != null) {
-            config.modCachePath = f.getAbsolutePath();
+            config.launcherPath = f.getAbsolutePath();
         } else {
-            config.modCachePath = prevPath;
+            config.launcherPath = prevPath;
         }
-        factorioFolderText.setText("Папка с Factorio: " + FactorioLauncher.config.factorioPath);
-        modCacheFolder.setText("Папка для кэша модов: " + FactorioLauncher.config.modCachePath);
-        tempFolderText.setText("Папка для временных целей: " + FactorioLauncher.config.tempPath);
+        updateFolderTexts();
     }
 
     @FXML
@@ -122,16 +122,14 @@ public class MainDocumentController implements Initializable {
         FactorioLauncherConfig config = FactorioLauncher.config;
         String prevPath = config.tempPath.substring(0);
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Выберите папку с для временных целей");
+        chooser.setTitle(bundle.getString("select-temp-folder"));
         File f = chooser.showDialog(mainPane.getScene().getWindow());
         if (f != null) {
             config.tempPath = f.getAbsolutePath();
         } else {
             config.tempPath = prevPath;
         }
-        factorioFolderText.setText("Папка с Factorio: " + FactorioLauncher.config.factorioPath);
-        modCacheFolder.setText("Папка для кэша модов: " + FactorioLauncher.config.modCachePath);
-        tempFolderText.setText("Папка для временных целей: " + FactorioLauncher.config.tempPath);
+        updateFolderTexts();
     }
 
     @FXML
@@ -165,9 +163,9 @@ public class MainDocumentController implements Initializable {
                     serverDescriptionText.setText(serverInfo.serverDescription);
                     gameVersionText.setText(serverInfo.applicationVersion.toString());
                     playersCountText.setText((serverInfo.clients.length + (serverInfo.serverUsername.equals("<server>") ? 0 : 1)) + "/" + (serverInfo.maxPlayers == 0 ? "∞" : serverInfo.maxPlayers));
-                    authNeededText.setText(serverInfo.requireUserVerification ? "Нет" : "Да");
-                    passwordNeededText.setText(serverInfo.hasPassword ? "Да" : "Нет");
-                    gameTimeText.setText(serverInfo.gameTimeElapsed / 60 / 24 + " дней " + (serverInfo.gameTimeElapsed / 60 % 24) + " часов " + (serverInfo.gameTimeElapsed % 60) + " минут");
+                    authNeededText.setText(serverInfo.requireUserVerification ? bundle.getString("yes") : bundle.getString("no"));
+                    passwordNeededText.setText(serverInfo.hasPassword ? bundle.getString("yes") : bundle.getString("no"));
+                    gameTimeText.setText(String.format(bundle.getString("time-format-string"), serverInfo.gameTimeElapsed / 60 / 24, serverInfo.gameTimeElapsed / 60 % 24, serverInfo.gameTimeElapsed % 60));
                     Platform.runLater(() -> {
                         modsVBox.getChildren().clear();
                     });
@@ -216,7 +214,7 @@ public class MainDocumentController implements Initializable {
                     }
                     if (serverInfo.clients.length == 0 && serverInfo.serverUsername.equals("<server>")) {
                         Platform.runLater(() -> {
-                            Text text = new Text("Никого нет");
+                            Text text = new Text(bundle.getString("nobody-on-server"));
                             text.setWrappingWidth(220);
                             text.setFont(Font.font("Lato", 14));
                             text.setFill(Paint.valueOf("WHITE"));
@@ -237,7 +235,7 @@ public class MainDocumentController implements Initializable {
                     }
                     if (serverInfo.admins.isEmpty()) {
                         Platform.runLater(() -> {
-                            Text text = new Text("Нет");
+                            Text text = new Text(bundle.getString("no"));
                             text.setWrappingWidth(220);
                             text.setFont(Font.font("Lato", 14));
                             text.setFill(Paint.valueOf("WHITE"));
@@ -258,7 +256,7 @@ public class MainDocumentController implements Initializable {
                     }
                     if (serverInfo.banlist.length == 0) {
                         Platform.runLater(() -> {
-                            Text text = new Text("Пусто");
+                            Text text = new Text(bundle.getString("empty"));
                             text.setWrappingWidth(220);
                             text.setFont(Font.font("Lato", 14));
                             text.setFill(Paint.valueOf("WHITE"));
@@ -279,7 +277,7 @@ public class MainDocumentController implements Initializable {
                     }
                     if (serverInfo.whitelist.length == 0) {
                         Platform.runLater(() -> {
-                            Text text = new Text("Выключен");
+                            Text text = new Text(bundle.getString("off"));
                             text.setWrappingWidth(220);
                             text.setFont(Font.font("Lato", 14));
                             text.setFill(Paint.valueOf("WHITE"));
@@ -288,11 +286,11 @@ public class MainDocumentController implements Initializable {
                     }
                     lastOkServer = serverIpString;
                 } else {
-                    errorText.setText("Сервер оффлайн");
+                    errorText.setText(bundle.getString("server-is-offline"));
                     errorText.setVisible(true);
                 }
             } else {
-                errorText.setText("Некорректный формат IP адреса\n Корректный - <IP>[:Порт]");
+                errorText.setText(bundle.getString("incorrect-ip-format"));
                 errorText.setVisible(true);
             }
             serverInfoVBox.setVisible(lastServerInfo != null && lastServerInfo.online);
@@ -308,17 +306,18 @@ public class MainDocumentController implements Initializable {
         new Thread(() -> {
             try {
                 final String lastOkServerPush = lastOkServer;
-                ModsHelper.prepareAndRun(lastServerInfo.mods, noLogRotationCheckBox.isSelected(), (autoConnectCheckBox.isSelected() ? lastOkServerPush : null));
+                ModsHelper.prepareAndRun(lastServerInfo.mods, noLogRotationCheckBox.isSelected(), (autoConnectCheckBox.isSelected() ? lastOkServerPush : null), additionalArgsField.getText());
             } catch (Exception e) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Ошибка");
-                    alert.setHeaderText("Произошла ошибка при запуске Factorio");
-                    alert.setContentText(e.getMessage());
+                    alert.setTitle(bundle.getString("error"));
+                    alert.setHeaderText(bundle.getString("run-error"));
+                    alert.setContentText(e.toString());
                     GuiHelper.prepareDialog(alert);
                     alert.showAndWait();
                     runGameButton.setDisable(false);
                 });
+                this.showInfo(new StateInfo("", -1, false));
             }
         }).start();
     }
@@ -345,6 +344,8 @@ public class MainDocumentController implements Initializable {
 
     @FXML
     private TextField serverIpField;
+    @FXML
+    private TextField additionalArgsField;
 
     @FXML
     private Button runGameButton;
@@ -393,6 +394,8 @@ public class MainDocumentController implements Initializable {
     private CheckBox noLogRotationCheckBox;
     @FXML
     private CheckBox autoConnectCheckBox;
+    @FXML
+    private CheckBox useSymlinksCheckBox;
 
     @FXML
     private Pane loadPane;
@@ -404,7 +407,7 @@ public class MainDocumentController implements Initializable {
     private Text percentLoadText;
 
     @FXML
-    private Text modCacheFolder;
+    private Text launcherFolderText;
 
     @FXML
     private Text tempFolderText;
@@ -414,25 +417,35 @@ public class MainDocumentController implements Initializable {
             closeWindow(null);
             return;
         }
+        if (stateInfo.progress < 0) {
+            loadPane.setVisible(false);
+            return;
+        }
         loadPane.setVisible(true);
         loadInfoText.setText(stateInfo.infoText);
         percentLoadText.setText(Math.round(stateInfo.progress * 100) + "%");
         loadProgressBar.setProgress(stateInfo.progress);
     }
 
+    private void updateFolderTexts() {
+        factorioFolderText.setText(String.format(bundle.getString("factorio-folder-text"), FactorioLauncher.config.factorioPath));
+        launcherFolderText.setText(String.format(bundle.getString("launcher-folder-text"), FactorioLauncher.config.launcherPath));
+        tempFolderText.setText(String.format(bundle.getString("temp-folder-text"), FactorioLauncher.config.tempPath));
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        bundle = rb;
         errorText.managedProperty().bind(errorText.visibleProperty());
         serverInfoVBox.managedProperty().bind(serverInfoVBox.visibleProperty());
         errorText.setVisible(false);
         serverInfoVBox.setVisible(false);
-        factorioFolderText.setText("Папка с Factorio: " + FactorioLauncher.config.factorioPath);
-        modCacheFolder.setText("Папка для кэша модов: " + FactorioLauncher.config.modCachePath);
-        tempFolderText.setText("Папка для временных целей: " + FactorioLauncher.config.tempPath);
         lastOkServer = FactorioLauncher.config.lastServer;
         serverIpField.setText(FactorioLauncher.config.lastServer);
         noLogRotationCheckBox.setSelected(FactorioLauncher.config.noLogRotation);
         autoConnectCheckBox.setSelected(FactorioLauncher.config.autoConnect);
+        useSymlinksCheckBox.setSelected(FactorioLauncher.config.useSymlinks);
+        updateFolderTexts();
         instance = this;
     }
 

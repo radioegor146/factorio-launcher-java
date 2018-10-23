@@ -10,7 +10,10 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.Semaphore;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -21,9 +24,20 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class RunHelper {
 
-    public static void runFactorio(Path modDir, boolean noLogRotation, String serverIp) throws Exception {
+    public static void runFactorio(Path modDir, boolean noLogRotation, String serverIp, String additionalArgs) throws Exception {
         ProcessBuilder pBuilder = new ProcessBuilder();
-        pBuilder = pBuilder.directory(Paths.get(FactorioLauncher.config.factorioPath).toFile()).command(getArchFolder(true), "--mod-directory", modDir.toFile().getAbsolutePath(), noLogRotation ? "--no-log-rotation" : "", serverIp == null ? "" : "--mp-connect", serverIp != null ? serverIp : "");
+        ArrayList<String> args = new ArrayList<>();
+        args.add(getArchBinFile(true));
+        args.add("--mod-directory");
+        args.add(modDir.toFile().getAbsolutePath());
+        if (noLogRotation)
+            args.add("--no-log-rotation");
+        if (serverIp != null) {
+            args.add("--mp-connect");
+            args.add(serverIp);
+        }
+        args.addAll(Arrays.asList(additionalArgs.split(" ")).stream().filter(str -> !str.isEmpty()).collect(Collectors.toList()));
+        pBuilder = pBuilder.directory(Paths.get(FactorioLauncher.config.factorioPath).toFile()).command(args);
         pBuilder.inheritIO();
         pBuilder.start();
     }
@@ -34,7 +48,7 @@ public class RunHelper {
         semaphore.acquire();
     }
 
-    public static String getArchFolder(boolean shouldshow) throws Exception {
+    public static String getArchBinFile(boolean shouldShowArchError) throws Exception {
         boolean is64bit;
         if (System.getProperty("os.name").contains("Windows")) {
             is64bit = (System.getenv("ProgramFiles(x86)") != null);
@@ -49,7 +63,7 @@ public class RunHelper {
             currentArch = is64bit ? "x32" : "x64";
             final String nowArch = currentArch;
             if (Files.exists(Paths.get(FactorioLauncher.config.factorioPath, "bin", currentArch, "factorio")) || Files.exists(Paths.get(FactorioLauncher.config.factorioPath, "bin", currentArch, "factorio.exe"))) {
-                if (shouldshow) {
+                if (shouldShowArchError) {
                     Platform.runLater(() -> {
                         Alert alert = new Alert(AlertType.WARNING);
                         alert.setTitle("Неправильный запуск");

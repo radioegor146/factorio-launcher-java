@@ -3,28 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/RunHelper.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/classes/ModSettings.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/fxml/style.css</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/FactorioNetMessage.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/fxml/MainDocument.fxml</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/FactorioLauncher.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/ModsHelper.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/classes/ListItem.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/classes/Version.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/ClientMessage.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/Config.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/classes/ModInfo.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/messages/ConnectionRequestMessage.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/gui/MainDocumentController.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/classes/Client.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/messages/ConnectionAcceptOrDenyMessage.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/ServerPinger.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/classes/AddressToUsernameMapping.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/messages/EmptyMessage.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/OSBased.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/FactorioNetMessageBundle.java</file>
-            <file>file:/W:/Temp/FactorioLauncher/src/by/radioegor146/serverpinger/messages/ConnectionRequestReplyConfirmMessage.java</file>
+            <file>file:/W:/Work/Repos/factorio-launcher-java/src/by/radioegor146/helpers/RunHelper.java</file>
         </group>
     </open-files>
 </project-private>

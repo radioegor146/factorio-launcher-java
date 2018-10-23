@@ -20,12 +20,12 @@ public class OSHelper {
 
     public static Path getDefaultModCacheDir() {
         if (isWindows()) {
-            return Paths.get(System.getenv("LOCALAPPDATA"), "FactorioLauncher", "modcache");
+            return Paths.get(System.getenv("LOCALAPPDATA"), "FactorioLauncher");
         } else {
             if (System.getenv().get("XDG_CONFIG_HOME") != null) {
-                return Paths.get(System.getenv().get("XDG_CONFIG_HOME"), "FactorioLauncher", "modcache");
+                return Paths.get(System.getenv().get("XDG_CONFIG_HOME"), "FactorioLauncher");
             }
-            return Paths.get(System.getProperty("user.home"), ".config", "FactorioLauncher", "modcache");
+            return Paths.get(System.getProperty("user.home"), ".config", "FactorioLauncher");
         }
     }
 
