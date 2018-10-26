@@ -7,6 +7,10 @@ import by.radioegor146.serverpinger.classes.ModInfo;
 import by.radioegor146.serverpinger.classes.Version;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
@@ -25,6 +29,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystemLoopException;
 import java.nio.file.FileVisitResult;
@@ -66,7 +71,7 @@ public class ModsHelper {
         Files.createDirectories(tempPath);
         return tempPath;
     }
-    
+
     private static Path getServerDir() throws IOException {
         Path serverPath = Paths.get(FactorioLauncher.config.launcherPath, "servers", MainDocumentController.instance.lastOkServer.replaceAll("[^a-zA-Z0-9\\.\\-]", "_"));
         Files.createDirectories(serverPath);
@@ -94,14 +99,15 @@ public class ModsHelper {
             MainDocumentController.instance.showInfo(new StateInfo(FactorioLauncher.currentBundle.getString("loading-mods"), 0.10, false));
         });
         int index = 0;
-        for (ModInfo mod : mods) {
-            if (mod.name.equals("base")) {
+        ModInfoWrapper[] modsw = getModInfo(mods);
+        for (ModInfoWrapper mod : modsw) {
+            if (mod.mod.name.equals("base")) {
                 continue;
             }
-            if (!avaibleMods.contains(mod)) {
+            if (!avaibleMods.contains(mod.mod)) {
                 final int outIndex = index;
                 Platform.runLater(() -> {
-                    MainDocumentController.instance.showInfo(new StateInfo(String.format(FactorioLauncher.currentBundle.getString("loading-mod"), mod), 0.10 + outIndex * (0.7 / (mods.length - 1)), false));
+                    MainDocumentController.instance.showInfo(new StateInfo(String.format(FactorioLauncher.currentBundle.getString("loading-mod"), mod.mod), 0.10 + outIndex * (0.7 / (mods.length - 1)), false));
                 });
                 downloadMod(mod);
                 index++;
@@ -161,10 +167,12 @@ public class ModsHelper {
             HashSet<ModInfo> neededMods = new HashSet<>(Arrays.asList(mods));
             tMods.removeAll(neededMods);
             for (ModInfo mod : tMods) {
-                if (Files.exists(modsDir.resolve(mod.name + "_" + mod.version)) && Files.isDirectory(modsDir.resolve(mod.name + "_" + mod.version)))
+                if (Files.exists(modsDir.resolve(mod.name + "_" + mod.version)) && Files.isDirectory(modsDir.resolve(mod.name + "_" + mod.version))) {
                     removeDirectory(modsDir.resolve(mod.name + "_" + mod.version));
-                if (Files.exists(modsDir.resolve(mod.name + "_" + mod.version + ".zip")))
+                }
+                if (Files.exists(modsDir.resolve(mod.name + "_" + mod.version + ".zip"))) {
                     Files.delete(modsDir.resolve(mod.name + "_" + mod.version + ".zip"));
+                }
             }
             Platform.runLater(() -> {
                 MainDocumentController.instance.showInfo(new StateInfo(FactorioLauncher.currentBundle.getString("preparing-mods-copying-files"), .9, false));
@@ -217,7 +225,7 @@ public class ModsHelper {
         });
         return true;
     }
-    
+
     private static void removeDirectory(Path dir) throws IOException {
         Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
             @Override
@@ -324,19 +332,71 @@ public class ModsHelper {
         }
         return mods;
     }
-    
+
     public static void updateCacheList() {
         avaibleMods.clear();
         avaibleMods.addAll(getModsFromDir(getModCacheDir()));
     }
 
-    private static void downloadMod(ModInfo mod) throws Exception {
-        URL website = new URL("https://factorio-launcher-mods.storage.googleapis.com/" + URLEncoder.encode(mod.name, "UTF-8").replace("+", "%20") + "/" + mod.version + ".zip");
+    private static ModInfoWrapper[] getModInfo(ModInfo[] mods) throws Exception {
+        JsonArray modsJSON = new JsonArray();
+        for (ModInfo mod : mods) {
+            JsonObject modJSON = new JsonObject();
+            modJSON.add("id", mod.name);
+            modJSON.add("version", mod.version.toString());
+            modsJSON.add(modJSON);
+        }
+        HttpURLConnection con = (HttpURLConnection) (new URL("https://factorio.ml/api/mods")).openConnection();
+        con.setRequestMethod("POST");
+        con.setDoOutput(true);
+        DataOutputStream dos = new DataOutputStream(con.getOutputStream());
+        dos.writeBytes(modsJSON.toString());
+        dos.flush();
+        dos.close();
+        //MAYBE NOT WORKS
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        //--------------
+        JsonArray outJSON = JsonArray.readFrom(response.toString());
+        System.out.println(outJSON.toString());
+        HashSet<ModInfoWrapper> modsw = new HashSet<ModInfoWrapper>();
+        for (JsonValue i : outJSON) {
+            ModInfoWrapper wrap = new ModInfoWrapper();
+            wrap.mod = new ModInfo();
+            JsonObject obj = i.asObject();
+            wrap.mod.name = obj.get("id").asString();
+            wrap.mod.version = new Version();
+            String[] vs = obj.get("version").asString().split("\\.");
+            wrap.mod.version.majorVersion = Short.parseShort(vs[0]);
+            wrap.mod.version.minorVersion = Short.parseShort(vs[1]);
+            wrap.mod.version.subVersion = Short.parseShort(vs[2]);
+            wrap.status = obj.get("status").asInt();
+            if (wrap.status != 3) {
+                wrap.link = obj.get("download_url").asString();
+            }
+            modsw.add(wrap);
+        }
+        return modsw.toArray(new ModInfoWrapper[0]);
+    }
+
+    private static void downloadMod(ModInfoWrapper mod) throws Exception {
+        if(mod.status == 3) return;
+        URL website = new URL(mod.link);
         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-        FileOutputStream fos = new FileOutputStream(getModCacheDir().resolve(mod.name + "_" + mod.version + ".zip").toFile());
+        FileOutputStream fos = new FileOutputStream(getModCacheDir().resolve(mod.mod.name + "_" + mod.mod.version + ".zip").toFile());
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
     }
 
     public static final HashSet<ModInfo> avaibleMods = new HashSet<>();
 
+    static class ModInfoWrapper {
+
+        public ModInfo mod;
+        public int status;
+        public String link;
+    }
 }
